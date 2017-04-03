@@ -80,7 +80,39 @@ base_treina = unb_curso_sample[intraining,]
 base_teste = unb_curso_sample[-intraining,]
 
 
+# Classificando com Naive Bayes
+naive_fit = train(x = dplyr::select(base_treina,-evasao),y=base_treina$evasao,method="nb",trControl=fitcontrol,metric = 'Spec')
+
+naive_pred = predict(naive_fit,base_teste)
+
+naive_matriz_conf = confusionMatrix(naive_pred,base_teste$evasao)
 
 
+# Classificando com CART
+cart_fit = train(x = dplyr::select(base_treina,-evasao),y=base_treina$evasao,method="rpart",trControl=fitcontrol,tuneLength = 10,maxdepth=30,metric = 'Spec')
+
+cart_pred = predict(cart_fit,base_teste)
+
+cart_matriz_conf = confusionMatrix(cart_pred,base_teste$evasao)
 
 
+# Classificando com C4.5
+c45_fit = train(x=dplyr::select(base_treina,-evasao),y=base_treina$evasao,method="J48",tuneLength = 10,trControl=fitcontrol,metric = 'Spec') 
+
+c45_pred = predict(c45_fit,base_teste)
+
+c45_matriz_conf = confusionMatrix(c45_pred,base_teste$evasao)
+
+
+# classificando com regressao 
+reglog_fit = train(x=dplyr::select(base_treina,-evasao),y=base_treina$evasao,data=base_treina,method="plr",trControl=fitcontrol,metric = 'Spec') 
+
+pred_reg = predict(reglog_fit,base_test)
+
+mc_reg = confusionMatrix(pred_reg,base_test$evasao)
+
+
+# classificando com redes neurais
+nnet_fit = train(x[,-2],y,method="nnet",trControl=fitcontrol,metric = 'Spec') 
+pred_nnet = predict(nnet_fit,base_test)
+mc_nnet = confusionMatrix(pred_nnet,base_test$evasao)
