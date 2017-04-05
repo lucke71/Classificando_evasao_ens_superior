@@ -7,12 +7,20 @@ unb_curso_sample = unb_curso[sample(1:nrow(unb_curso),1000),]
 #colocando co_ies na 1a posicao de coluna para ficar igual as tabelas DF (sql da UnB ja foi arrumado)
 # unb_curso_sample = unb_curso_sample[,c(170,1:169)]
 
+# Eh necessario retirar o atributo co_aluno_situacao, pois ele da informacao completa aos modelos
+unb_curso_sample = dplyr::select(unb_curso_sample,-co_aluno_situacao)
+
+database = unb_curso_sample
+
+
+classificando_evasao = function(database,cv_folds,pct_training,classificador){
+
 # indicar quais atributos sao factors
-attr_nao_factor = c("vagas","candidatos","num_ies","idade","ano_max","ano_concluiu","nu_nota_comp1","nu_nota_comp2","nu_nota_comp3","nu_nota_comp4","nu_nota_comp5","nu_nota_redacao")
+attr_nao_factor = c("vagas","candidatos","num_ies","idade","ano_max","ano_concluiu","nu_nota_comp1","nu_nota_comp2","nu_nota_comp3","nu_nota_comp4","nu_nota_comp5","nu_nota_redacao","doc_exercicio","doc_qualifcacao","doc_exer_outro_org","doc_afastado_outro","doc_falecido","doc_graduacao","doc_especializacao","doc_mestrado","doc_doutorado","doc_integ_de","doc_integ_sem_de","doc_temp_parcial","doc_horista","doc_brasileiro","doc_brasileiro_nat","doc_estrangeiro")
 
-nao_factor_pos = sapply(attr_nao_factor,function(x)grep(paste0("^",x,"$"),names(unb_curso_sample)))
+nao_factor_pos = sapply(attr_nao_factor,function(x)grep(paste0("^",x,"$"),names(database)))
 
-var_factor = (1:ncol(unb_curso_sample))[-nao_factor_pos]
+var_factor = (1:ncol(database))[-nao_factor_pos]
 
 # funcao para remover espacos antes e depois de respostas
 tira_espaco = function (x) gsub("^\\s+|\\s+$", "", x)
@@ -25,94 +33,105 @@ val_NA = function (x) ifelse(is.na(x),"branco",x)
 
 
 # aplicando funcao trim nos atributos que sao "fatores"
-unb_curso_sample[,var_factor] = lapply(unb_curso_sample[,var_factor],tira_espaco)
+database[,var_factor] = lapply(database[,var_factor],tira_espaco)
 
 # aplicando funcao val_branco nos atributos que sao "fatores"
-unb_curso_sample[,var_factor] = lapply(unb_curso_sample[,var_factor],val_branco)
+database[,var_factor] = lapply(database[,var_factor],val_branco)
 
 # aplicando funcao val_branco nos atributos que sao "fatores"
-unb_curso_sample[,var_factor] = lapply(unb_curso_sample[,var_factor],val_NA)
+database[,var_factor] = lapply(database[,var_factor],val_NA)
 
 
 # removendo municipios de nascimento e de escola - criando atributo indicativo de municipios diferentes
-unb_curso_sample = unb_curso_sample %>% mutate(mun_nasc_dif_res = cod_municipio_nascimento!=cod_municipio_residencia) 
-unb_curso_sample = unb_curso_sample %>% mutate(mun_res_dif_esc = cod_municipio_residencia!=cod_municipio_esc) 
-unb_curso_sample = unb_curso_sample %>% mutate(mun_res_dif_prova = cod_municipio_residencia!=cod_municipio_prova) 
-unb_curso_sample = unb_curso_sample %>% mutate(uf_res = substr(cod_municipio_residencia,1,2))
-unb_curso_sample = unb_curso_sample %>% mutate(uf_esc = substr(cod_municipio_esc,1,2))
-unb_curso_sample = unb_curso_sample %>% mutate(uf_nasc = substr(cod_municipio_nascimento,1,2))
+database = database %>% mutate(mun_nasc_dif_res = cod_municipio_nascimento!=cod_municipio_residencia) 
+database = database %>% mutate(mun_res_dif_esc = cod_municipio_residencia!=cod_municipio_esc) 
+database = database %>% mutate(mun_res_dif_prova = cod_municipio_residencia!=cod_municipio_prova) 
+database = database %>% mutate(uf_res = substr(cod_municipio_residencia,1,2))
+database = database %>% mutate(uf_esc = substr(cod_municipio_esc,1,2))
+database = database %>% mutate(uf_nasc = substr(cod_municipio_nascimento,1,2))
 
-unb_curso_sample = dplyr::select(unb_curso_sample,-c(cod_municipio_residencia,cod_municipio_esc,cod_municipio_prova,cod_municipio_nascimento))
+database = dplyr::select(database,-c(cod_municipio_residencia,cod_municipio_esc,cod_municipio_prova,cod_municipio_nascimento))
 
 
 # adicionando atributo dummy para indicar se aluno concluiu ensino medio e adicionando zero ao ano de conclusao caso nao tenha concluido
-unb_curso_sample$concluiu_ens_med = ifelse(is.na(unb_curso_sample$ano_concluiu),FALSE,TRUE)
-unb_curso_sample$ano_concluiu[is.na(unb_curso_sample$ano_concluiu)] = 0
+database$concluiu_ens_med = ifelse(is.na(database$ano_concluiu),FALSE,TRUE)
+database$ano_concluiu[is.na(database$ano_concluiu)] = 0
 
 # atualizando a posicao dos atributos fatores
-nao_factor_pos = sapply(attr_nao_factor,function(x)grep(paste0("^",x,"$"),names(unb_curso_sample)))
-var_factor = (1:ncol(unb_curso_sample))[-nao_factor_pos]
+nao_factor_pos = sapply(attr_nao_factor,function(x)grep(paste0("^",x,"$"),names(database)))
+var_factor = (1:ncol(database))[-nao_factor_pos]
 
 # transformando os atributos em factors
-unb_curso_sample[,var_factor] = lapply(unb_curso_sample[,var_factor],factor,exclude=NULL)
+database[,var_factor] = lapply(database[,var_factor],factor,exclude=NULL)
 
 # os missing sao pessoas que nao possuem notas nas provas do enem
-# lapply(unb_curso_sample[,sapply(unb_curso_sample,class)=="numeric"],summary)
+# lapply(database[,sapply(database,class)=="numeric"],summary)
 
 # percentual de missing
-# 1-(nrow(na.omit(unb_curso_sample))/nrow(unb_curso_sample))
+# 1-(nrow(na.omit(database))/nrow(database))
 
 # Removendo missing
-unb_curso_sample = na.omit(unb_curso_sample)
+database = na.omit(database)
 
 # Removendo as colunas que nao possuem variancia - as colunas a ser retiradas pode variar de acordo com os dados 
-nzv = nearZeroVar(unb_curso_sample)
-unb_curso_sample = unb_curso_sample[,-nzv]
+nzv = nearZeroVar(database)
+database = database[,-nzv]
 
 # Determinando o tipo de controle a ser feito sobre os modelos
-fitcontrol = trainControl(method = "cv",number = 4)
+fitcontrol = trainControl(method = "cv",number = cv_folds,summaryFunction = twoClassSummary)
 
 # Separando base de treinamento da base de teste
-intraining = createDataPartition(unb_curso_sample$evasao, p = .75, list = FALSE)
+intraining = createDataPartition(database$evasao, p = pct_training, list = FALSE)
 
-base_treina = unb_curso_sample[intraining,]
+base_treina = database[intraining,]
 
-base_teste = unb_curso_sample[-intraining,]
-
-
-# Classificando com Naive Bayes
-naive_fit = train(x = dplyr::select(base_treina,-evasao),y=base_treina$evasao,method="nb",trControl=fitcontrol,metric = 'Spec')
-
-naive_pred = predict(naive_fit,base_teste)
-
-naive_matriz_conf = confusionMatrix(naive_pred,base_teste$evasao)
+base_teste = database[-intraining,]
 
 
-# Classificando com CART
-cart_fit = train(x = dplyr::select(base_treina,-evasao),y=base_treina$evasao,method="rpart",trControl=fitcontrol,tuneLength = 10,maxdepth=30,metric = 'Spec')
+if(classificar=="ẗodos" | classificador=="NB"){
+  # Classificando com Naive Bayes
+  naive_fit = train(x = dplyr::select(base_treina,-evasao),y=base_treina$evasao,method="nb",trControl=fitcontrol,metric = 'Spec')
+  
+  naive_pred = predict(naive_fit,base_teste)
+  
+  naive_matriz_conf = confusionMatrix(naive_pred,base_teste$evasao)
+}
 
-cart_pred = predict(cart_fit,base_teste)
+if(classificar=="ẗodos" | classificador=="CART"){
+  # Classificando com CART
+  cart_fit = train(x = dplyr::select(base_treina,-evasao),y=base_treina$evasao,method="rpart",trControl=fitcontrol,tuneLength = 10,maxdepth=30,metric = 'Spec')
+  
+  cart_pred = predict(cart_fit,base_teste)
+  
+  cart_matriz_conf = confusionMatrix(cart_pred,base_teste$evasao)
+}
 
-cart_matriz_conf = confusionMatrix(cart_pred,base_teste$evasao)
-
-
+if(classificar=="ẗodos" | classificador=="C45"){
 # Classificando com C4.5
 c45_fit = train(x=dplyr::select(base_treina,-evasao),y=base_treina$evasao,method="J48",tuneLength = 10,trControl=fitcontrol,metric = 'Spec') 
 
 c45_pred = predict(c45_fit,base_teste)
 
 c45_matriz_conf = confusionMatrix(c45_pred,base_teste$evasao)
+}
 
-
+if(classificar=="ẗodos" | classificador=="reglog"){
 # classificando com regressao 
-reglog_fit = train(x=dplyr::select(base_treina,-evasao),y=base_treina$evasao,data=base_treina,method="plr",trControl=fitcontrol,metric = 'Spec') 
+# reglog_fit = train(x=dplyr::select(base_treina,-c(evasao,co_curso)),y=base_treina$evasao,data=base_treina,method="plr",trControl=fitcontrol,metric = 'Spec') 
+base_log = dplyr::select(base_treina,-co_curso)
+reglog_fit = train(base_log$evasao~.,data=base_log,method="plr",trControl=fitcontrol,metric = 'Spec') 
 
 pred_reg = predict(reglog_fit,base_test)
 
 mc_reg = confusionMatrix(pred_reg,base_test$evasao)
+}
 
-
+if(classificar=="ẗodos" | classificador=="Nnet"){
 # classificando com redes neurais
-nnet_fit = train(x[,-2],y,method="nnet",trControl=fitcontrol,metric = 'Spec') 
-pred_nnet = predict(nnet_fit,base_test)
-mc_nnet = confusionMatrix(pred_nnet,base_test$evasao)
+nnet_fit = train(x=dplyr::select(base_treina,-c(evasao,co_curso)),y=base_treina$evasao,method="nnet",trControl=fitcontrol,metric = 'Spec') 
+pred_nnet = predict(nnet_fit,base_teste)
+mc_nnet = confusionMatrix(pred_nnet,base_teste$evasao)
+}
+}
+
+
