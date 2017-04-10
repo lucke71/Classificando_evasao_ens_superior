@@ -10,8 +10,4 @@ Atributos que costumam possuir mais de 53 valores: co_curso.
 
 Preciso retirar dos SQL: co_aluno_situacao.
 
-Arrumar tempo limite para redes neurais ou aumentar as iterações máximas.
-
-Colocar chamadas para os outros classificadores
-
 Fazer a função de gerar as bases para a classificação.
