@@ -1519,5 +1519,5 @@ cria_tabela_evasao = function(co_ies,tipo_evasao){
 		) tab2
 		where ano_max2=nu_ano
 		)"
-	)
+	))
 }
