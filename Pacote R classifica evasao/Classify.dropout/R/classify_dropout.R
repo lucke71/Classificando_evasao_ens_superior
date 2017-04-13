@@ -1,16 +1,5 @@
-# Argumentos da funcao que sao obrigatorios: database --- escolher o dataframe que possui os dados de evasao a serem utilizados;
-# Os outros argumentos possuem valores padrao. 
-# Classificador padrao: CART; Opcoes: "CART" (executa apenas classificador CART), 
-# "C45" (executa apenas classificador C4.5), "NB" (executa apenas classificador Naive Bayes), "reglog" (executa apenas classificador de regressao logistica),
-# "Nnet" (executa apenas classificador de redes neurais) e "todos" (executa todos os classificadores)
-# Numero de folds para cross-validation padrao e 4; Opcoes: qualquer numero maior que zero
-# Percentual da base a ser usada para treinamento padrao = 75% (25% sao usados para teste); Opcoes: qualquer percentual (valores de 0 a 1)
-# Numero de cores a ser usado caso OS seja baseado em UNIX padrao = 4; As opcoes dependem da maquina em que esta sendo executado
-# Fazer balanceamento dos dados padrao e nao fazer balanceamento. Opcoes: "up"para up-sampling e "down" para down-sampling
-
-# Depende de dplyr, caret e doParallel (UNIX)
-
-classify_dropout = function(database,cv_folds=4,pct_training=0.75,classificador="CART",num_cores=4,balanceamento=""){
+classify_dropout <-
+function(database,cv_folds=4,pct_training=0.75,classificador="CART",num_cores=4,balanceamento=""){
   library(dplyr)
   library(caret)
   
@@ -186,5 +175,3 @@ classify_dropout = function(database,cv_folds=4,pct_training=0.75,classificador=
     mc_nnet <<- confusionMatrix(nnet_pred,base_teste$evasao)
   }
 }
-
-

@@ -1,4 +1,5 @@
-create_dropout_database = function(co_ies,tipo_evasao){
+create_dropout_database <-
+function(co_ies,tipo_evasao){
 	dbGetQuery(con,paste0("	
 	with enem_empilhado as (
 		--Select do ENEM 2014		
