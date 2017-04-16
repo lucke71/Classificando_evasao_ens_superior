@@ -1,5 +1,5 @@
 classify_dropout <-
-function(database,cv_folds=4,pct_training=0.75,classificador="CART",num_cores=4,balanceamento=""){
+function(database,cv_folds=4,pct_training=0.75,classifier="CART",num_cores=4,balance="no"){
   library(dplyr)
   library(caret)
   
@@ -80,21 +80,21 @@ function(database,cv_folds=4,pct_training=0.75,classificador="CART",num_cores=4,
   
   
   # Fazendo as classificacoes com upsampling na base de treinamento
-  if(balanceamento=="up"){
+  if(balance=="up"){
     up_data = upSample(x = dplyr::select(base_treina,-evasao), y = base_treina$evasao,yname="evasao")
   }
   
   # Downsampling
-  if(balanceamento=="down"){
+  if(balance=="down"){
     dwn_data = downSample(x = dplyr::select(base_treina,-evasao), y = base_treina$evasao,yname="evasao")
   }
   
   
   # Classificando com Naive Bayes
-  if(classificador=="todos" | classificador=="NB"){
-    if(balanceamento=="up"){
+  if(classifier=="all" | classifier=="NB"){
+    if(balance=="up"){
       naive_fit <<- train(x = dplyr::select(up_data,-evasao),y=up_data$evasao,method="nb",trControl=fitcontrol,metric = 'Spec')
-    }else if(balanceamento=="down"){
+    }else if(balance=="down"){
       naive_fit <<- train(x = dplyr::select(dwn_data,-evasao),y=dwn_data$evasao,method="nb",trControl=fitcontrol,metric = 'Spec')
     }else{
       naive_fit <<- train(x = dplyr::select(base_treina,-evasao),y=base_treina$evasao,method="nb",trControl=fitcontrol,metric = 'Spec')
@@ -105,10 +105,10 @@ function(database,cv_folds=4,pct_training=0.75,classificador="CART",num_cores=4,
   
   
   # Classificando com CART
-  if(classificador=="todos" | classificador=="CART"){
-    if(balanceamento=="up"){
+  if(classifier=="all" | classifier=="CART"){
+    if(balance=="up"){
       cart_fit <<- train(x = dplyr::select(up_data,-evasao),y=up_data$evasao,method="rpart",trControl=fitcontrol,tuneLength = 10,maxdepth=30,metric = 'Spec')
-    }else if(balanceamento=="down"){
+    }else if(balance=="down"){
       cart_fit <<- train(x = dplyr::select(dwn_data,-evasao),y=dwn_data$evasao,method="rpart",trControl=fitcontrol,tuneLength = 10,maxdepth=30,metric = 'Spec')
     }else{
       cart_fit <<- train(x = dplyr::select(base_treina,-evasao),y=base_treina$evasao,method="rpart",trControl=fitcontrol,tuneLength = 10,maxdepth=30,metric = 'Spec')
@@ -119,10 +119,10 @@ function(database,cv_folds=4,pct_training=0.75,classificador="CART",num_cores=4,
   
   
   # Classificando com C4.5
-  if(classificador=="todos" | classificador=="C45"){
-    if(balanceamento=="up"){
+  if(classifier=="all" | classifier=="C45"){
+    if(balance=="up"){
       c45_fit <<- train(x=dplyr::select(up_data,-evasao),y=up_data$evasao,method="J48",tuneLength = 10,trControl=fitcontrol,metric = 'Spec') 
-    }else if(balanceamento=="down"){
+    }else if(balance=="down"){
       c45_fit <<- train(x=dplyr::select(dwn_data,-evasao),y=dwn_data$evasao,method="J48",tuneLength = 10,trControl=fitcontrol,metric = 'Spec') 
     }else{
       c45_fit <<- train(x=dplyr::select(base_treina,-evasao),y=base_treina$evasao,method="J48",tuneLength = 10,trControl=fitcontrol,metric = 'Spec') 
@@ -135,13 +135,13 @@ function(database,cv_folds=4,pct_training=0.75,classificador="CART",num_cores=4,
   # Classificando com regressao logistica
   
   
-  if(classificador=="todos" | classificador=="reglog"){
-    if(balanceamento=="up"){
+  if(classifier=="all" | classifier=="reglog"){
+    if(balance=="up"){
       if(any(grepl("co_curso",names(database)))){
         base_log <<- dplyr::select(up_data,-co_curso)
       }else{base_log=up_data}
       reglog_fit <<- train(evasao ~ .,data=base_log ,method="glm",family=binomial(link="logit"),trControl=fitcontrol,metric = 'Spec') 
-    }else if(balanceamento=="down"){
+    }else if(balance=="down"){
       if(any(grepl("co_curso",names(database)))){
         base_log <<- dplyr::select(dwn_data,-co_curso)
       }else{base_log=up_data}
@@ -157,12 +157,12 @@ function(database,cv_folds=4,pct_training=0.75,classificador="CART",num_cores=4,
   }
   
   # Classificando com redes neurais
-  if(classificador=="todos" | classificador=="Nnet"){
-    if(balanceamento=="up"){
+  if(classifier=="all" | classifier=="Nnet"){
+    if(balance=="up"){
       if(any(grepl("co_curso",names(database)))){
         nnet_fit <<- train(x=dplyr::select(up_data,-c(evasao,co_curso)),y=up_data$evasao,method="nnet",trControl=fitcontrol,metric = 'Spec', maxit=1000)
       }else{nnet_fit <<- train(x=dplyr::select(up_data,-evasao),y=up_data$evasao,method="nnet",trControl=fitcontrol,metric = 'Spec', maxit=1000)}
-    }else if(balanceamento=="down"){
+    }else if(balance=="down"){
       if(any(grepl("co_curso",names(database)))){
         nnet_fit <<- train(x=dplyr::select(dwn_data,-c(evasao,co_curso)),y=dwn_data$evasao,method="nnet",trControl=fitcontrol,metric = 'Spec', maxit=1000) 
       }else{nnet_fit <<- train(x=dplyr::select(dwn_data,-evasao),y=dwn_data$evasao,method="nnet",trControl=fitcontrol,metric = 'Spec', maxit=1000) }

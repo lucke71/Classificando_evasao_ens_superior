@@ -1,13 +1,13 @@
 \name{db_example}
 \alias{db_example}
 \docType{data}
-\title{
-Example data containing 1000 random observations from brazilian higher education students.
+\title{Data frame containing random raw data on 1000 students of higher education in Brazil.
 %%   ~~ data name/kind ... ~~
 }
 \description{
-Use this data to tryout the classifying function "classify_dropout"
 %%  ~~ A concise (1-5 lines) description of the dataset. ~~
+A data frame with 1000 students. The primary attribute is "evasao" which indicates whether or not a given student has dropped out of his/her major.
+It should be used as a test for the main function in this package, "classify_dropout".
 }
 \usage{data("db_example")}
 \format{
@@ -185,6 +185,5 @@ Use this data to tryout the classifying function "classify_dropout"
 }
 \examples{
 data(db_example)
-## maybe str(db_example) ; plot(db_example) ...
 }
 \keyword{datasets}

@@ -3,7 +3,7 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 %%  ~~function to do ... ~~
-Creates databases to classify dropout students
+Creates databases to classify dropout students.
 }
 \description{
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
@@ -16,7 +16,7 @@ create_dropout_database(co_ies, tipo_evasao)
 \arguments{
   \item{co_ies}{
 %%     ~~Describe \code{co_ies} here~~
-numeric vector containing the institutions codes
+numeric vector containing the institutions codes.
 }
   \item{tipo_evasao}{
 %%     ~~Describe \code{tipo_evasao} here~~
@@ -25,7 +25,6 @@ A string specifying which level of dropout is to be generated. Possible values a
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
-
 }
 \value{
 %%  ~Describe the value returned
@@ -40,6 +39,7 @@ dataframe
 }
 \author{
 %%  ~~who you are~~
+Lucas Assis
 }
 \note{
 %%  ~~further notes~~
@@ -49,13 +49,13 @@ dataframe
 
 \seealso{
 %% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link[Classify.dropout]{classify_dropout}}
+\code{\link[Classify.dropout]{db_example}}
+
 }
 \examples{
-create_dropout_database(co_ies=2,tipo_evasao="curso")
+# Example of dropout at major level for institution 10.
+create_dropout_database(co_ies=10,tipo_evasao="curso")
 
+# Example of dropout at group level for institutions 415, 15001 and 55.
 create_dropout_database(co_ies=c(415,15001,55),tipo_evasao="ies")
-}
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }% use one of  RShowDoc("KEYWORDS")
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
