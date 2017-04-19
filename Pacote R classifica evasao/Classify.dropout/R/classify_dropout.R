@@ -69,7 +69,7 @@ function(database,cv_folds=4,pct_training=0.75,classifier="CART",num_cores=4,bal
   fitcontrol = trainControl(method = "cv",number = cv_folds,summaryFunction = twoClassSummary)
   
   # Numero de nucleos para processamento paralelo (LINUX) -- Para windows usar Microsoft R OPEN
-  if(Sys.info()[1]=="Linux")library(doParallel);registerDoParallel(cores = num_cores)
+  if(Sys.info()[1]=="Linux"){library(doParallel);registerDoParallel(cores = num_cores)}
   
   # Separando base de treinamento da base de teste
   intraining = createDataPartition(database$evasao, p = pct_training, list = FALSE)
