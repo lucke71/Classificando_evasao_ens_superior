@@ -144,7 +144,7 @@ function(database,cv_folds=4,pct_training=0.75,classifier="CART",num_cores=4,bal
     }else if(balance=="down"){
       if(any(grepl("co_curso",names(database)))){
         base_log <<- dplyr::select(dwn_data,-co_curso)
-      }else{base_log=up_data}
+      }else{base_log=dwn_data}
       reglog_fit <<- train(evasao ~ .,data=base_log ,method="glm",family=binomial(link="logit"),trControl=fitcontrol,metric = 'Spec') 
     }else{
       if(any(grepl("co_curso",names(database)))){
