@@ -58,6 +58,9 @@ function(database,cv_folds=4,pct_training=0.75,classifier="CART",num_cores=4,bal
   # transformando os atributos em factors
   database[,var_factor] = lapply(database[,var_factor],factor,exclude=NULL)
   
+  # modificando os levels do atributo de evasao para nomes 
+  levels(database$evasao) = c("N","S")
+  
   # Removendo missing
   database = na.omit(database)
   
@@ -66,7 +69,7 @@ function(database,cv_folds=4,pct_training=0.75,classifier="CART",num_cores=4,bal
   database = database[,-nzv]
   
   # Determinando o tipo de controle a ser feito sobre os modelos
-  fitcontrol = trainControl(method = "cv",number = cv_folds,summaryFunction = twoClassSummary)
+  fitcontrol = trainControl(method = "cv",number = cv_folds,summaryFunction = twoClassSummary, classProbs = T)
   
   # Numero de nucleos para processamento paralelo (LINUX) -- Para windows usar Microsoft R OPEN
   if(Sys.info()[1]=="Linux"){library(doParallel);registerDoParallel(cores = num_cores)}
@@ -138,7 +141,7 @@ function(database,cv_folds=4,pct_training=0.75,classifier="CART",num_cores=4,bal
   if(classifier=="all" | classifier=="reglog"){
     if(balance=="up"){
       if(any(grepl("co_curso",names(database)))){
-        base_log <<- dplyr::select(up_data,-co_curso)
+        base_log = dplyr::select(up_data,-co_curso)
       }else{base_log=up_data}
       reglog_fit <<- train(evasao ~ .,data=base_log ,method="glm",family=binomial(link="logit"),trControl=fitcontrol,metric = 'Spec') 
     }else if(balance=="down"){
@@ -149,7 +152,7 @@ function(database,cv_folds=4,pct_training=0.75,classifier="CART",num_cores=4,bal
     }else{
       if(any(grepl("co_curso",names(database)))){
         base_log <<- dplyr::select(base_treina,-co_curso)
-      }else{base_log=up_data}
+      }else{base_log=base_treina}
       reglog_fit <<- train(evasao ~ .,data=base_log ,method="glm",family=binomial(link="logit"),trControl=fitcontrol,metric = 'Spec') 
     }
     reg_pred <<- predict(reglog_fit,base_teste)
@@ -169,7 +172,7 @@ function(database,cv_folds=4,pct_training=0.75,classifier="CART",num_cores=4,bal
     }else{
       if(any(grepl("co_curso",names(database)))){
         nnet_fit <<- train(x=dplyr::select(base_treina,-c(evasao,co_curso)),y=base_treina$evasao,method="nnet",trControl=fitcontrol,metric = 'Spec', maxit=1000) 
-      }else{nnet_fit <<- train(x=dplyr::select(base_treina,-evasao),y=base_treina$evasao,method="nnet",trControl=fitcontrol,metric = 'Spec', maxit=1000) }
+      }else{nnet_fit <<- train(x=dplyr::select(base_treina,-evasao),y=base_treina$evasao,method="nnet",trControl=fitcontrol,metric = 'Spec', maxit=1000)}
     }
     nnet_pred <<- predict(nnet_fit,base_teste)
     mc_nnet <<- confusionMatrix(nnet_pred,base_teste$evasao)
