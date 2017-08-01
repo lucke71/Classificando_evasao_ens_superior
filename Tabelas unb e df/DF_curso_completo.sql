@@ -4,12 +4,13 @@ create table DF_curso_completo as (
 				t1.co_aluno,
 				t1.nu_cpf,
 				t1.co_ies,
+				t2.ds_categoria_administrativa,
+				t2.ds_organizacao_academica,
 				t1.co_curso,
+				extract(year from dt_ingresso_curso) as ano_ing,
 				case when extract(month from dt_ingresso_curso)<=6 then 1 else 2 end as semestre_ingresso,
 				COALESCE(t2.qt_vagas_integral_pres,0) + COALESCE(t2.qt_vagas_matutino_pres,0) + COALESCE(t2.qt_vagas_noturno_pres,0) + COALESCE(t2.qt_vagas_vespertino_pres,0) as vagas,					
 				COALESCE(t2.qt_inscritos_integral_pres,0) + COALESCE(t2.qt_inscritos_matutino_pres,0) + COALESCE(t2.qt_inscritos_noturno_pres,0) + COALESCE(t2.qt_inscritos_vespertino_pres,0) as candidatos, 	
-				t2.co_grau_academico,
-				t2.co_nivel_academico,
 				co_ocde_area_geral,
 				case when co_ocde_area_geral in (4,5) then 1 /*Exatas*/
 					 when co_ocde_area_geral in (6,7) then 2 /*Saude*/
@@ -35,7 +36,7 @@ create table DF_curso_completo as (
 				2010 as ano
 		from dm_aluno_2010 t1
 		inner join dm_curso_2010 t2 on t1.co_curso=t2.co_curso
-		where t2.co_uf_curso=53 and t1.co_modalidade_ensino=1 and t1.co_modalidade_ensino=1
+		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1
 	),
 
 	docentes_2010 as (
@@ -60,7 +61,7 @@ create table DF_curso_completo as (
 				count(case when co_nacionalidade_docente=3 then 1 end) over (partition by t1.co_curso) as doc_estrangeiro
 		from docente_curso_2010 t1 
 		inner join dm_docente_2010 t2 on t1.co_docente=t2.co_docente
-		where co_curso in (select co_curso from alunos_2010)
+		where t1.co_ies=2
 	),
 
 	alunos_2011 as (
@@ -68,12 +69,13 @@ create table DF_curso_completo as (
 				t1.co_aluno,
 				t1.nu_cpf,
 				t1.co_ies,
+				t2.ds_categoria_administrativa,
+				t2.ds_organizacao_academica,
 				t1.co_curso,
+				extract(year from dt_ingresso_curso) as ano_ing,
 				case when extract(month from dt_ingresso_curso)<=6 then 1 else 2 end as semestre_ingresso,
 				COALESCE(t2.qt_vagas_integral_pres,0) + COALESCE(t2.qt_vagas_matutino_pres,0) + COALESCE(t2.qt_vagas_noturno_pres,0) + COALESCE(t2.qt_vagas_vespertino_pres,0) as vagas,					
 				COALESCE(t2.qt_inscritos_integral_pres,0) + COALESCE(t2.qt_inscritos_matutino_pres,0) + COALESCE(t2.qt_inscritos_noturno_pres,0) + COALESCE(t2.qt_inscritos_vespertino_pres,0) as candidatos, 	
-				t2.co_grau_academico,
-				t2.co_nivel_academico,
 				co_ocde_area_geral,
 				case when co_ocde_area_geral in (4,5) then 1 /*Exatas*/
 					 when co_ocde_area_geral in (6,7) then 2 /*Saude*/
@@ -99,7 +101,7 @@ create table DF_curso_completo as (
 				2011 as ano
 		from dm_aluno_2011 t1
 		inner join dm_curso_2011 t2 on t1.co_curso=t2.co_curso
-		where t2.co_uf_curso=53 and t1.co_modalidade_ensino=1 and t1.co_modalidade_ensino=1
+		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1
 	),
 
 	docentes_2011 as (
@@ -124,7 +126,7 @@ create table DF_curso_completo as (
 				count(case when co_nacionalidade_docente=3 then 1 end) over (partition by t1.co_curso) as doc_estrangeiro
 		from docente_curso_2011 t1 
 		inner join dm_docente_2011 t2 on t1.co_docente=t2.co_docente
-		where co_curso in (select co_curso from alunos_2011)
+		where t1.co_ies=2
 	),
 		
 	alunos_2012 as (
@@ -136,8 +138,6 @@ create table DF_curso_completo as (
 				case when extract(month from dt_ingresso_curso)<=6 then 1 else 2 end as semestre_ingresso,
 				COALESCE(t2.qt_vagas_integral_pres,0) + COALESCE(t2.qt_vagas_matutino_pres,0) + COALESCE(t2.qt_vagas_noturno_pres,0) + COALESCE(t2.qt_vagas_vespertino_pres,0) as vagas,					
 				COALESCE(t2.qt_inscritos_integral_pres,0) + COALESCE(t2.qt_inscritos_matutino_pres,0) + COALESCE(t2.qt_inscritos_noturno_pres,0) + COALESCE(t2.qt_inscritos_vespertino_pres,0) as candidatos, 	
-				t2.co_grau_academico,
-				t2.co_nivel_academico,
 				co_ocde_area_geral,
 				case when co_ocde_area_geral in (4,5) then 1 /*Exatas*/
 					 when co_ocde_area_geral in (6,7) then 2 /*Saude*/
@@ -163,7 +163,7 @@ create table DF_curso_completo as (
 				2012 as ano
 		from dm_aluno_2012 t1
 		inner join dm_curso_2012 t2 on t1.co_curso=t2.co_curso
-		where t2.co_uf_curso=53 and t1.co_modalidade_ensino=1 and t1.co_modalidade_ensino=1
+		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1
 	),
 
 	docentes_2012 as (
@@ -188,7 +188,7 @@ create table DF_curso_completo as (
 				count(case when co_nacionalidade_docente=3 then 1 end) over (partition by t1.co_curso) as doc_estrangeiro
 		from docente_curso_2012 t1 
 		inner join dm_docente_2012 t2 on t1.co_docente=t2.co_docente
-		where co_curso in (select co_curso from alunos_2012)
+		where t1.co_ies=2
 	),
 
 	alunos_2013 as (
@@ -196,12 +196,13 @@ create table DF_curso_completo as (
 				t1.co_aluno,
 				t1.nu_cpf,
 				t1.co_ies,
+				t2.ds_categoria_administrativa,
+				t2.ds_organizacao_academica,
 				t1.co_curso,
+				extract(year from dt_ingresso_curso) as ano_ing,
 				case when extract(month from dt_ingresso_curso)<=6 then 1 else 2 end as semestre_ingresso,
 				COALESCE(t2.qt_vagas_principal_integral,0) + COALESCE(t2.qt_vagas_principal_matutino,0) + COALESCE(t2.qt_vagas_principal_noturno,0) + COALESCE(t2.qt_vagas_principal_vespertino,0) as vagas,
 				COALESCE(t2.qt_inscritos_principal_matu,0) + COALESCE(t2.qt_inscritos_principal_vesp,0) + COALESCE(t2.qt_inscritos_principal_noturno,0) + COALESCE(t2.qt_inscritos_principal_inte,0) as candidatos, 
-				t2.co_grau_academico,
-				t2.co_nivel_academico,
 				t1.co_ocde_area_geral,
 				case when t1.co_ocde_area_geral in (4,5) then 1 /*Exatas*/
 					 when t1.co_ocde_area_geral in (6,7) then 2 /*Saude*/
@@ -227,7 +228,7 @@ create table DF_curso_completo as (
 				2013 as ano
 		from dm_aluno_2013 t1
 		inner join dm_curso_2013 t2 on t1.co_curso=t2.co_curso
-		where t2.co_uf_curso=53 and t1.co_modalidade_ensino=1 and t1.co_modalidade_ensino=1
+		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1
 	),
 
 	docentes_2013 as (
@@ -252,7 +253,7 @@ create table DF_curso_completo as (
 				count(case when co_nacionalidade_docente=3 then 1 end) over (partition by t1.co_curso) as doc_estrangeiro
 		from docente_curso_2013 t1 
 		inner join dm_docente_2013 t2 on t1.co_docente=t2.co_docente
-		where co_curso in (select co_curso from alunos_2013)
+		where t1.co_ies=2
 	),
 
 	alunos_2014 as (
@@ -260,12 +261,13 @@ create table DF_curso_completo as (
 				t1.co_aluno,
 				t1.nu_cpf,
 				t1.co_ies,
+				t2.ds_categoria_administrativa,
+				t2.ds_organizacao_academica,
 				t1.co_curso,
+				extract(year from dt_ingresso_curso) as ano_ing,
 				case when extract(month from dt_ingresso_curso)<=6 then 1 else 2 end as semestre_ingresso,
 				COALESCE(t2.qt_vagas_novas_integral,0) + COALESCE(t2.qt_vagas_novas_matutino,0) + COALESCE(t2.qt_vagas_novas_vespertino,0) + COALESCE(t2.qt_vagas_novas_noturno,0) as vagas,
 				COALESCE(t2.qt_insc_vagas_novas_int,0) + COALESCE(t2.qt_insc_vagas_novas_mat,0) + COALESCE(t2.qt_insc_vagas_novas_vesp,0) + COALESCE(t2.qt_insc_vagas_novas_not,0) as candidatos, 
-				t2.co_grau_academico,
-				t2.co_nivel_academico,
 				t1.co_ocde_area_geral,
 				case when t1.co_ocde_area_geral in (4,5) then 1 /*Exatas*/
 					 when t1.co_ocde_area_geral in (6,7) then 2 /*Saude*/
@@ -291,7 +293,7 @@ create table DF_curso_completo as (
 				2014 as ano
 		from dm_aluno_2014 t1
 		inner join dm_curso_2014 t2 on t1.co_curso=t2.co_curso
-		where t2.co_uf_curso=53 and t1.co_modalidade_ensino=1 and t1.co_modalidade_ensino=1
+		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1
 	),
 
 	docentes_2014 as (
@@ -316,7 +318,7 @@ create table DF_curso_completo as (
 				count(case when co_nacionalidade_docente=3 then 1 end) over (partition by t1.co_curso) as doc_estrangeiro
 		from docente_curso_2014 t1 
 		inner join dm_docente_2014 t2 on t1.co_docente=t2.co_docente
-		where co_curso in (select co_curso from alunos_2014)
+		where t1.co_ies=2
 	),
 
 	ies_df as (
@@ -460,8 +462,11 @@ create table DF_curso_completo as (
 	)
 
 	select 	tab2.co_ies,
+			tab2.ds_categoria_administrativa,
+			tab2.ds_organizacao_academica,
 			tab2.co_curso,
 			tab2.semestre_ingresso,
+			tab2.ano_ing,
 			tab2.vagas,
 			tab2.candidatos, 
 			tab2.co_grau_academico,
@@ -548,6 +553,10 @@ create table DF_curso_completo as (
 			tab2.in_guia_interprete,
 			tab2.in_certificado,
 			tab2.cod_municipio_prova,
+			tab2.NOTA_CN,
+			tab2.NOTA_CH,
+			tab2.NOTA_LC,
+			tab2.NOTA_MT,
 			tab2.nu_nota_comp1,
 			tab2.nu_nota_comp2,
 			tab2.nu_nota_comp3,
@@ -680,6 +689,10 @@ create table DF_curso_completo as (
 				t2.in_guia_interprete,
 				t2.in_certificado,
 				t2.cod_municipio_prova,
+				t2.NOTA_CN,
+				t2.NOTA_CH,
+				t2.NOTA_LC,
+				t2.NOTA_MT,
 				t2.nu_nota_comp1,
 				t2.nu_nota_comp2,
 				t2.nu_nota_comp3,

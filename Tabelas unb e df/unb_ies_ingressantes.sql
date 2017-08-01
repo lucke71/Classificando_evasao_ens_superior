@@ -1,4 +1,4 @@
-create table unb_ies_completo as (
+create table unb_ies_ingressantes as (
 	with alunos_2010 as(
 		select 	distinct 
 				t1.co_aluno,
@@ -41,6 +41,7 @@ create table unb_ies_completo as (
 		from dm_aluno_2010 t1
 		inner join dm_curso_2010 t2 on t1.co_curso=t2.co_curso
 		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1
+			and extract(year from dt_ingresso_curso)=2010
 	),
 
 	num_ies_2010 as (
@@ -117,6 +118,7 @@ create table unb_ies_completo as (
 		from dm_aluno_2011 t1
 		inner join dm_curso_2011 t2 on t1.co_curso=t2.co_curso
 		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1
+			and extract(year from dt_ingresso_curso)=2011
 	),
 
 	num_ies_2011 as (
@@ -193,6 +195,7 @@ create table unb_ies_completo as (
 		from dm_aluno_2012 t1
 		inner join dm_curso_2012 t2 on t1.co_curso=t2.co_curso
 		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1
+			and extract(year from dt_ingresso_curso)=2012
 	),
 
 	num_ies_2012 as (
@@ -269,6 +272,7 @@ create table unb_ies_completo as (
 		from dm_aluno_2013 t1
 		inner join dm_curso_2013 t2 on t1.co_curso=t2.co_curso
 		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1
+			and extract(year from dt_ingresso_curso)=2013
 	),
 
 	num_ies_2013 as (
@@ -345,6 +349,7 @@ create table unb_ies_completo as (
 		from dm_aluno_2014 t1
 		inner join dm_curso_2014 t2 on t1.co_curso=t2.co_curso
 		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1
+			and extract(year from dt_ingresso_curso)=2014
 	),
 
 	num_ies_2014 as (
@@ -505,25 +510,16 @@ create table unb_ies_completo as (
 		inner join num_ies_2014 t3 on t1.co_aluno=t3.co_aluno
 	),
 
-	ult_sit as (
-		select tab.*
-		from (
-			select	t1.*,
-					max(ano) over (partition by co_aluno) as ano_max
-			from unb t1
-		)tab
-		where ano_max=ano
-	),
 
 	evasao as (
 		select 	tab1.*,
 				1 as evasao		
 		from(
 			select 	t1.*,
-					count(co_curso) over (partition by co_aluno) as num_cursos_teste,
-					count(case when co_aluno_situacao=4 then 1 end) over (partition by co_aluno) as num_desvinc,
-					count(case when co_aluno_situacao=5 then 1 end) over (partition by co_aluno) as num_transf
-			from ult_sit t1
+					count(co_curso) over (partition by co_aluno,ano) as num_cursos_teste,
+					count(case when co_aluno_situacao=4 then 1 end) over (partition by co_aluno,ano) as num_desvinc,
+					count(case when co_aluno_situacao=5 then 1 end) over (partition by co_aluno,ano) as num_transf
+			from unb t1
 		)tab1
 		where (num_desvinc=num_cursos_teste) or (num_transf+num_desvinc = num_cursos_teste)
 
@@ -533,10 +529,10 @@ create table unb_ies_completo as (
 				0 as evasao		
 		from(
 			select 	t2.*,
-					count(co_curso) over (partition by co_aluno) as num_cursos_teste,
-					count(case when co_aluno_situacao=4 then 1 end) over (partition by co_aluno) as num_desvinc,
-					count(case when co_aluno_situacao=5 then 1 end) over (partition by co_aluno) as num_transf
-			from ult_sit t2
+					count(co_curso) over (partition by co_aluno,ano) as num_cursos_teste,
+					count(case when co_aluno_situacao=4 then 1 end) over (partition by co_aluno,ano) as num_desvinc,
+					count(case when co_aluno_situacao=5 then 1 end) over (partition by co_aluno,ano) as num_transf
+			from unb t2
 		)tab2
 		where not((num_desvinc=num_cursos_teste) or (num_transf+num_desvinc = num_cursos_teste))
 	)
@@ -571,9 +567,9 @@ create table unb_ies_completo as (
 			tab2.in_bolsa_monitoria,
 			tab2.in_bolsa_pesquisa,
 			tab2.in_bolsa_extensao,
-			tab2.num_ies,
 			tab2.num_cursos,
-			tab2.ano_max,
+			tab2.num_ies,
+			tab2.ano,
 			tab2.evasao,
 			tab2.doc_exercicio,
 			tab2.doc_qualifcacao,
