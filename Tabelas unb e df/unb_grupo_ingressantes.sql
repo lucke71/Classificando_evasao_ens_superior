@@ -11,7 +11,7 @@ create table Unb_grupo_ingressantes as (
 				case when extract(month from dt_ingresso_curso)<=6 then 1 else 2 end as semestre_ingresso,
 				COALESCE(t2.qt_vagas_integral_pres,0) + COALESCE(t2.qt_vagas_matutino_pres,0) + COALESCE(t2.qt_vagas_noturno_pres,0) + COALESCE(t2.qt_vagas_vespertino_pres,0) as vagas,					
 				COALESCE(t2.qt_inscritos_integral_pres,0) + COALESCE(t2.qt_inscritos_matutino_pres,0) + COALESCE(t2.qt_inscritos_noturno_pres,0) + COALESCE(t2.qt_inscritos_vespertino_pres,0) as candidatos, 	
-				co_ocde_area_geral,
+				COALESCE(co_ocde_area_geral,0) as co_ocde_area_geral,
 				case when co_ocde_area_geral in (4,5) then 1 /*Exatas*/
 					 when co_ocde_area_geral in (6,7) then 2 /*Saude*/
 					 when co_ocde_area_geral in (1,2,3,8) then 3 /*Humanas*/
@@ -88,7 +88,7 @@ create table Unb_grupo_ingressantes as (
 				case when extract(month from dt_ingresso_curso)<=6 then 1 else 2 end as semestre_ingresso,
 				COALESCE(t2.qt_vagas_integral_pres,0) + COALESCE(t2.qt_vagas_matutino_pres,0) + COALESCE(t2.qt_vagas_noturno_pres,0) + COALESCE(t2.qt_vagas_vespertino_pres,0) as vagas,					
 				COALESCE(t2.qt_inscritos_integral_pres,0) + COALESCE(t2.qt_inscritos_matutino_pres,0) + COALESCE(t2.qt_inscritos_noturno_pres,0) + COALESCE(t2.qt_inscritos_vespertino_pres,0) as candidatos, 	
-				co_ocde_area_geral,
+				COALESCE(co_ocde_area_geral,0) as co_ocde_area_geral,
 				case when co_ocde_area_geral in (4,5) then 1 /*Exatas*/
 					 when co_ocde_area_geral in (6,7) then 2 /*Saude*/
 					 when co_ocde_area_geral in (1,2,3,8) then 3 /*Humanas*/
@@ -165,7 +165,7 @@ create table Unb_grupo_ingressantes as (
 				case when extract(month from dt_ingresso_curso)<=6 then 1 else 2 end as semestre_ingresso,
 				COALESCE(t2.qt_vagas_integral_pres,0) + COALESCE(t2.qt_vagas_matutino_pres,0) + COALESCE(t2.qt_vagas_noturno_pres,0) + COALESCE(t2.qt_vagas_vespertino_pres,0) as vagas,					
 				COALESCE(t2.qt_inscritos_integral_pres,0) + COALESCE(t2.qt_inscritos_matutino_pres,0) + COALESCE(t2.qt_inscritos_noturno_pres,0) + COALESCE(t2.qt_inscritos_vespertino_pres,0) as candidatos, 	
-				co_ocde_area_geral,
+				COALESCE(co_ocde_area_geral,0) as co_ocde_area_geral,
 				case when co_ocde_area_geral in (4,5) then 1 /*Exatas*/
 					 when co_ocde_area_geral in (6,7) then 2 /*Saude*/
 					 when co_ocde_area_geral in (1,2,3,8) then 3 /*Humanas*/
@@ -242,7 +242,7 @@ create table Unb_grupo_ingressantes as (
 				case when extract(month from dt_ingresso_curso)<=6 then 1 else 2 end as semestre_ingresso,
 				COALESCE(t2.qt_vagas_principal_integral,0) + COALESCE(t2.qt_vagas_principal_matutino,0) + COALESCE(t2.qt_vagas_principal_noturno,0) + COALESCE(t2.qt_vagas_principal_vespertino,0) as vagas,
 				COALESCE(t2.qt_inscritos_principal_matu,0) + COALESCE(t2.qt_inscritos_principal_vesp,0) + COALESCE(t2.qt_inscritos_principal_noturno,0) + COALESCE(t2.qt_inscritos_principal_inte,0) as candidatos, 
-				t1.co_ocde_area_geral,
+				COALESCE(t1.co_ocde_area_geral,0) as co_ocde_area_geral,
 				case when t1.co_ocde_area_geral in (4,5) then 1 /*Exatas*/
 					 when t1.co_ocde_area_geral in (6,7) then 2 /*Saude*/
 					 when t1.co_ocde_area_geral in (1,2,3,8) then 3 /*Humanas*/
@@ -319,7 +319,7 @@ create table Unb_grupo_ingressantes as (
 				case when extract(month from dt_ingresso_curso)<=6 then 1 else 2 end as semestre_ingresso,
 				COALESCE(t2.qt_vagas_novas_integral,0) + COALESCE(t2.qt_vagas_novas_matutino,0) + COALESCE(t2.qt_vagas_novas_vespertino,0) + COALESCE(t2.qt_vagas_novas_noturno,0) as vagas,
 				COALESCE(t2.qt_insc_vagas_novas_int,0) + COALESCE(t2.qt_insc_vagas_novas_mat,0) + COALESCE(t2.qt_insc_vagas_novas_vesp,0) + COALESCE(t2.qt_insc_vagas_novas_not,0) as candidatos, 
-				t1.co_ocde_area_geral,
+				COALESCE(t1.co_ocde_area_geral,0) as co_ocde_area_geral,
 				case when t1.co_ocde_area_geral in (4,5) then 1 /*Exatas*/
 					 when t1.co_ocde_area_geral in (6,7) then 2 /*Saude*/
 					 when t1.co_ocde_area_geral in (1,2,3,8) then 3 /*Humanas*/
@@ -407,7 +407,6 @@ create table Unb_grupo_ingressantes as (
 		from alunos_2010 t1
 		inner join docentes_2010 t2 on t1.co_curso=t2.co_curso
 		inner join num_ies_2010 t3 on t1.co_aluno=t3.co_aluno
-		where co_ocde_area_geral is not null
 
 		union all
 
@@ -433,7 +432,6 @@ create table Unb_grupo_ingressantes as (
 		from alunos_2011 t1
 		inner join docentes_2011 t2 on t1.co_curso=t2.co_curso
 		inner join num_ies_2011 t3 on t1.co_aluno=t3.co_aluno
-		where co_ocde_area_geral is not null
 
 
 		union all
@@ -460,7 +458,6 @@ create table Unb_grupo_ingressantes as (
 		from alunos_2012 t1
 		inner join docentes_2012 t2 on t1.co_curso=t2.co_curso
 		inner join num_ies_2012 t3 on t1.co_aluno=t3.co_aluno
-		where co_ocde_area_geral is not null
 
 		union all
 
@@ -486,7 +483,6 @@ create table Unb_grupo_ingressantes as (
 		from alunos_2013 t1
 		inner join docentes_2013 t2 on t1.co_curso=t2.co_curso
 		inner join num_ies_2013 t3 on t1.co_aluno=t3.co_aluno
-		where co_ocde_area_geral is not null
 
 		union all
 
@@ -512,7 +508,6 @@ create table Unb_grupo_ingressantes as (
 		from alunos_2014 t1
 		inner join docentes_2014 t2 on t1.co_curso=t2.co_curso
 		inner join num_ies_2014 t3 on t1.co_aluno=t3.co_aluno
-		where co_ocde_area_geral is not null
 	),
 
 	evasao as (
