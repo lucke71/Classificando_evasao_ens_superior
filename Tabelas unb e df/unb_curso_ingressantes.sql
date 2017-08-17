@@ -555,6 +555,7 @@ create table unb_curso_ingressantes as (
 			tab2.in_bolsa_pesquisa,
 			tab2.in_bolsa_extensao,
 			tab2.num_ies,
+			tab2.num_cursos,
 			tab2.ano,
 			tab2.evasao,
 			tab2.doc_exercicio,
