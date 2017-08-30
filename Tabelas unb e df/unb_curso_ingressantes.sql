@@ -41,7 +41,7 @@ create table unb_curso_ingressantes as (
 		from dm_aluno_2010 t1
 		inner join dm_curso_2010 t2 on t1.co_curso=t2.co_curso
 		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1
-			and extract(year from dt_ingresso_curso)=2010
+			and extract(year from dt_ingresso_curso)=2010 and not(co_aluno_situacao=5 and tp_atributo_ingresso=1)
 	),
 
 	num_ies_2010 as (
@@ -118,7 +118,7 @@ create table unb_curso_ingressantes as (
 		from dm_aluno_2011 t1
 		inner join dm_curso_2011 t2 on t1.co_curso=t2.co_curso
 		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1
-			and extract(year from dt_ingresso_curso)=2011
+			and extract(year from dt_ingresso_curso)=2011 and not(co_aluno_situacao=5 and tp_atributo_ingresso=1)
 	),
 
 	num_ies_2011 as (
@@ -195,7 +195,7 @@ create table unb_curso_ingressantes as (
 		from dm_aluno_2012 t1
 		inner join dm_curso_2012 t2 on t1.co_curso=t2.co_curso
 		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1
-			and extract(year from dt_ingresso_curso)=2012
+			and extract(year from dt_ingresso_curso)=2012 and not(co_aluno_situacao=5 and tp_atributo_ingresso=1)
 	),
 
 	num_ies_2012 as (
@@ -272,7 +272,7 @@ create table unb_curso_ingressantes as (
 		from dm_aluno_2013 t1
 		inner join dm_curso_2013 t2 on t1.co_curso=t2.co_curso
 		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1
-			and extract(year from dt_ingresso_curso)=2013
+			and extract(year from dt_ingresso_curso)=2013 and not(co_aluno_situacao=5 and tp_atributo_ingresso=1)
 	),
 
 	num_ies_2013 as (
@@ -349,7 +349,7 @@ create table unb_curso_ingressantes as (
 		from dm_aluno_2014 t1
 		inner join dm_curso_2014 t2 on t1.co_curso=t2.co_curso
 		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1
-			and extract(year from dt_ingresso_curso)=2014
+			and extract(year from dt_ingresso_curso)=2014 and not(co_aluno_situacao=5 and tp_atributo_ingresso=1)
 	),
 
 	num_ies_2014 as (
