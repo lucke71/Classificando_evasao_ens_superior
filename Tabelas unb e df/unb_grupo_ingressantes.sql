@@ -540,6 +540,8 @@ create table Unb_grupo_ingressantes as (
 			tab2.ds_categoria_administrativa,
 			tab2.ds_organizacao_academica,
 			tab2.co_curso,
+			tab2.co_aluno,
+			tab2.nu_cpf,
 			tab2.semestre_ingresso,
 			tab2.ano_ing,
 			tab2.vagas,
