@@ -31,14 +31,21 @@ classify_dropout <-
     database[,var_factor] = lapply(database[,var_factor],val_NA)
     
     
-    if(any(grepl("cod_municipio_residencia",names(database))) & any(grepl("cod_municipio_nascimento",names(database))) & any(grepl("cod_municipio_prova",names(database)))){
+    if(any(grepl("cod_municipio_residencia",names(database))) & any(grepl("cod_municipio_esc",names(database))) & any(grepl("cod_municipio_nascimento",names(database))) & any(grepl("cod_municipio_prova",names(database)))){
       # removendo municipios de nascimento e de escola - criando atributo indicativo de municipios diferentes
-      database = database %>% mutate(mun_nasc_dif_res = cod_municipio_nascimento!=cod_municipio_residencia) 
+      database = database %>% mutate(mun_res_dif_nasc = cod_municipio_residencia!=cod_municipio_nascimento) 
       database = database %>% mutate(mun_res_dif_esc = cod_municipio_residencia!=cod_municipio_esc) 
       database = database %>% mutate(mun_res_dif_prova = cod_municipio_residencia!=cod_municipio_prova) 
+
+      database = database %>% mutate(mun_nasc_dif_esc = cod_municipio_nascimento!=cod_municipio_esc) 
+      database = database %>% mutate(mun_nasc_dif_prova = cod_municipio_nascimento!=cod_municipio_prova) 
+      
+      database = database %>% mutate(mun_esc_dif_prova = cod_municipio_esc!=cod_municipio_prova) 
+      
       database = database %>% mutate(uf_res = substr(cod_municipio_residencia,1,2))
-      database = database %>% mutate(uf_esc = substr(cod_municipio_esc,1,2))
       database = database %>% mutate(uf_nasc = substr(cod_municipio_nascimento,1,2))
+      database = database %>% mutate(uf_esc = substr(cod_municipio_esc,1,2))
+      database = database %>% mutate(uf_prova = substr(cod_municipio_prova,1,2))
       
       database = dplyr::select(database,-c(cod_municipio_residencia,cod_municipio_esc,cod_municipio_prova,cod_municipio_nascimento))
     }    
