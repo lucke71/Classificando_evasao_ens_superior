@@ -5,6 +5,7 @@ classify_dropout <-
     
     # indicar quais atributos sao factors
     attr_nao_factor = c("vagas","candidatos","num_ies","idade","ano_max2","ano_ing","ano_concluiu","nota_cn","nota_ch","nota_lc","nota_mt","nu_nota_comp1","nu_nota_comp2","nu_nota_comp3","nu_nota_comp4","nu_nota_comp5","nu_nota_redacao","doc_exercicio","doc_qualifcacao","doc_exer_outro_org","doc_afastado_outro","doc_falecido","doc_graduacao","doc_especializacao","doc_mestrado","doc_doutorado","doc_integ_de","doc_integ_sem_de","doc_temp_parcial","doc_horista","doc_brasileiro","doc_brasileiro_nat","doc_estrangeiro","tmp_perman")
+    attr_nao_factor = c("vagas","candidatos","num_ies","idade","ano_max","ano_ing","ano_concluiu","doc_exercicio","doc_qualifcacao","doc_exer_outro_org","doc_afastado_outro","doc_afas_saude","doc_sem_grad","doc_graduacao","doc_especializacao","doc_mestrado","doc_doutorado","doc_integ_de","doc_integ_sem_de","doc_temp_parcial","doc_horista","doc_brasileiro","doc_brasileiro_nat","doc_estrangeiro","nota_cn","nota_ch","nota_lc","nota_mt","nu_nota_comp1","nu_nota_comp2","nu_nota_comp3","nu_nota_comp4","nu_nota_comp5","nu_nota_redacao","tmp_perman")
     
     nao_factor_pos = sapply(attr_nao_factor,function(x)grep(paste0("^",x,"$"),names(database)))
     
