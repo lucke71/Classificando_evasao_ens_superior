@@ -528,6 +528,7 @@ create table unb_curso_ingressantes as (
 			tab2.ds_categoria_administrativa,
 			tab2.ds_organizacao_academica,
 			tab2.co_curso,
+			tab2.id_mascara,
 			tab2.co_aluno,
 			tab2.nu_cpf,
 			tab2.semestre_ingresso,
