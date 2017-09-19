@@ -135,6 +135,7 @@
 	q075,
 	q076
 	FROM enem_2014
+	WHERE nota_cn is not null and nota_ch is not null and nota_lc is not null and nota_mt is not null and nu_nota_comp1 is not null and nu_nota_comp2 is not null and nu_nota_comp3 is not null and nu_nota_comp4 is not null and nu_nota_comp5 is not null and nu_nota_redacao is not null
 
 	UNION ALL
 
@@ -274,6 +275,7 @@
 	q075,
 	q076
 	FROM enem_2013
+	WHERE nota_cn is not null and nota_ch is not null and nota_lc is not null and nota_mt is not null and nu_nota_comp1 is not null and nu_nota_comp2 is not null and nu_nota_comp3 is not null and nu_nota_comp4 is not null and nu_nota_comp5 is not null and nu_nota_redacao is not null
 
 	UNION ALL
 
@@ -413,6 +415,7 @@
 	Q61 as q075,
 	Q62 as q076
 	FROM enem_2012
+	WHERE nota_cn is not null and nota_ch is not null and nota_lc is not null and nota_mt is not null and nu_nota_comp1 is not null and nu_nota_comp2 is not null and nu_nota_comp3 is not null and nu_nota_comp4 is not null and nu_nota_comp5 is not null and nu_nota_redacao is not null
 
 	UNION ALL
 
@@ -552,7 +555,7 @@
 	NULL as q075,
 	q52 as q076
 	FROM enem_2011_comp
-
+	WHERE nota_cn is not null and nota_ch is not null and nota_lc is not null and nota_mt is not null and nu_nota_comp1 is not null and nu_nota_comp2 is not null and nu_nota_comp3 is not null and nu_nota_comp4 is not null and nu_nota_comp5 is not null and nu_nota_redacao is not null
 
 	UNION ALL
 
@@ -696,4 +699,5 @@
 	NULL as q075,
 	q53 as q076
 	FROM enem_2010
+	WHERE nota_cn is not null and nota_ch is not null and nota_lc is not null and nota_mt is not null and nu_nota_comp1 is not null and nu_nota_comp2 is not null and nu_nota_comp3 is not null and nu_nota_comp4 is not null and nu_nota_comp5 is not null and nu_nota_redacao is not null
 );
