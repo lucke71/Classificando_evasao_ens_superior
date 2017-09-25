@@ -3,7 +3,8 @@ classify_dropout <-
     library(dplyr)
     library(caret)
     
-    # indicar quais atributos sao factors
+    # indicar quais atributos nao sao factors
+    #attr_nao_factor = c("vagas","candidatos","num_ies","idade","ano_CES","ano_ENEM","ano_ing","nu_integralizacao_integral","nu_integralizacao_matutino","nu_integralizacao_vespertino","nu_integralizacao_noturno","ano_concluiu","doc_exercicio","doc_qualifcacao","doc_exer_outro_org","doc_afastado_outro","doc_afas_saude","doc_sem_grad","doc_graduacao","doc_especializacao","doc_mestrado","doc_doutorado","doc_integ_de","doc_integ_sem_de","doc_temp_parcial","doc_horista","doc_brasileiro","doc_brasileiro_nat","doc_estrangeiro","nota_cn","nota_ch","nota_lc","nota_mt","nu_nota_comp1","nu_nota_comp2","nu_nota_comp3","nu_nota_comp4","nu_nota_comp5","nu_nota_redacao","tmp_perman")
     attr_nao_factor = c("vagas","candidatos","num_ies","idade","ano_CES","ano_ENEM","ano_ing","ano_concluiu","doc_exercicio","doc_qualifcacao","doc_exer_outro_org","doc_afastado_outro","doc_afas_saude","doc_sem_grad","doc_graduacao","doc_especializacao","doc_mestrado","doc_doutorado","doc_integ_de","doc_integ_sem_de","doc_temp_parcial","doc_horista","doc_brasileiro","doc_brasileiro_nat","doc_estrangeiro","nota_cn","nota_ch","nota_lc","nota_mt","nu_nota_comp1","nu_nota_comp2","nu_nota_comp3","nu_nota_comp4","nu_nota_comp5","nu_nota_redacao","tmp_perman")
     
     nao_factor_pos = sapply(attr_nao_factor,function(x)grep(paste0("^",x,"$"),names(database)))
@@ -56,6 +57,18 @@ classify_dropout <-
       database$ano_concluiu[is.na(database$ano_concluiu)] = 0
     }
     
+    # substituindo quatro indicadores de turno por apenas um (alunos possuem apenas um turno)
+    database$turno = ifelse(database$in_matutino_curso==1,1,
+                            ifelse(database$in_vespertino_curso==1,2,
+                                   ifelse(database$in_noturno_curso==1,3,
+                                          ifelse(database$in_integral_curso==1,4,NA))))
+    database = dplyr::select(database,-c(in_matutino_curso,in_vespertino_curso,in_noturno_curso,in_integral_curso))
+    
+    # database$nu_integralizacao_matutino[is.na(database$nu_integralizacao_matutino)] = 0
+    # database$nu_integralizacao_vespertino[is.na(database$nu_integralizacao_vespertino)] = 0
+    # database$nu_integralizacao_noturno[is.na(database$nu_integralizacao_noturno)] = 0
+    # database$nu_integralizacao_integral[is.na(database$nu_integralizacao_integral)] = 0
+    
     # adicionando diferenca entre ano de ingresso e ultimo ano do aluno na base
     if(any(grepl("ano_max",names(database)) & grepl("ano_ing",names(database)))){
       database$tmp_perman = database$ano_max - database$ano_ing 
@@ -76,8 +89,11 @@ classify_dropout <-
     # Removendo missing
     database = na.omit(database)
     
-    # Removendo as colunas que nao possuem variancia - as colunas a ser retiradas pode variar de acordo com os dados 
+    # Removendo as colunas que nao possuem variancia - as colunas a ser retiradas pode variar de acordo com os dados (nao pode ser retirada a evasao)
     nzv = nearZeroVar(database)
+    if(any(names(database)[nzv]=="evasao")){
+      nzv = nzv[-which(names(database)[nzv]=="evasao")]  
+    }
     database = database[,-nzv]
     
     # Determinando o tipo de controle a ser feito sobre os modelos
@@ -166,15 +182,15 @@ classify_dropout <-
     # Classificando com regressao logistica
     if(classifier=="all" | classifier=="reglog"){
       if(balance=="up"){
-        reglog_fit_up <<- train(evasao ~ .,data=up_data ,method="glm",family=binomial(link="logit"),trControl=fitcontrol,metric = 'Spec') 
+        reglog_fit_up <<- train(evasao ~ .,data=up_data ,method="glm",family=binomial(link="logit"),trControl=fitcontrol,metric = 'Spec',maxit=100) 
         reg_pred_up <<- predict(reglog_fit_up,base_teste)
         mc_reg_up <<- confusionMatrix(reg_pred_up,base_teste$evasao)
       }else if(balance=="down"){
-        reglog_fit_dwn <<- train(evasao ~ .,data=dwn_data ,method="glm",family=binomial(link="logit"),trControl=fitcontrol,metric = 'Spec') 
+        reglog_fit_dwn <<- train(evasao ~ .,data=dwn_data ,method="glm",family=binomial(link="logit"),trControl=fitcontrol,metric = 'Spec',maxit=100) 
         reg_pred_dwn <<- predict(reglog_fit_dwn,base_teste)
         mc_reg_dwn <<- confusionMatrix(reg_pred_dwn,base_teste$evasao)
       }else{
-        reglog_fit <<- train(evasao ~ .,data=base_treina ,method="glm",family=binomial(link="logit"),trControl=fitcontrol,metric = 'Spec') 
+        reglog_fit <<- train(evasao ~ .,data=base_treina ,method="glm",family=binomial(link="logit"),trControl=fitcontrol,metric = 'Spec',maxit=100) 
         reg_pred <<- predict(reglog_fit,base_teste)
         mc_reg <<- confusionMatrix(reg_pred,base_teste$evasao)
       }
