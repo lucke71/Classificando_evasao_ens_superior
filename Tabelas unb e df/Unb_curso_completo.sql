@@ -40,7 +40,7 @@ create table unb_curso_completo as (
 				2010 as ano
 		from dm_aluno_2010 t1
 		inner join dm_curso_2010 t2 on t1.co_curso=t2.co_curso
-		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1
+		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1 and not(co_aluno_situacao=5 and tp_atributo_ingresso=1)
 	),
 
 	num_ies_2010 as (
@@ -116,7 +116,7 @@ create table unb_curso_completo as (
 				2011 as ano
 		from dm_aluno_2011 t1
 		inner join dm_curso_2011 t2 on t1.co_curso=t2.co_curso
-		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1
+		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1 and not(co_aluno_situacao=5 and tp_atributo_ingresso=1)
 	),
 
 	num_ies_2011 as (
@@ -192,7 +192,7 @@ create table unb_curso_completo as (
 				2012 as ano
 		from dm_aluno_2012 t1
 		inner join dm_curso_2012 t2 on t1.co_curso=t2.co_curso
-		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1
+		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1 and not(co_aluno_situacao=5 and tp_atributo_ingresso=1)
 	),
 
 	num_ies_2012 as (
@@ -268,7 +268,7 @@ create table unb_curso_completo as (
 				2013 as ano
 		from dm_aluno_2013 t1
 		inner join dm_curso_2013 t2 on t1.co_curso=t2.co_curso
-		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1
+		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1 and not(co_aluno_situacao=5 and tp_atributo_ingresso=1)
 	),
 
 	num_ies_2013 as (
@@ -344,7 +344,7 @@ create table unb_curso_completo as (
 				2014 as ano
 		from dm_aluno_2014 t1
 		inner join dm_curso_2014 t2 on t1.co_curso=t2.co_curso
-		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1
+		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1 and not(co_aluno_situacao=5 and tp_atributo_ingresso=1)
 	),
 
 	num_ies_2014 as (
@@ -505,7 +505,6 @@ create table unb_curso_completo as (
 		inner join num_ies_2014 t3 on t1.co_aluno=t3.co_aluno
 	),
 
-
 	ult_sit as (
 		select tab.*
 		from (
@@ -534,6 +533,9 @@ create table unb_curso_completo as (
 			tab2.ds_categoria_administrativa,
 			tab2.ds_organizacao_academica,
 			tab2.co_curso,
+			tab2.id_mascara,
+			tab2.co_aluno,
+			tab2.nu_cpf,
 			tab2.semestre_ingresso,
 			tab2.ano_ing,
 			tab2.vagas,
@@ -562,6 +564,8 @@ create table unb_curso_completo as (
 			tab2.in_bolsa_extensao,
 			tab2.num_ies,
 			tab2.num_cursos,
+			tab2.ano as ano_CES,
+			tab2.ano_max2 as ano_ENEM,
 			tab2.ano_max,
 			tab2.evasao,
 			tab2.doc_exercicio,

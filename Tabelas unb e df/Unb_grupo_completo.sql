@@ -11,7 +11,7 @@ create table Unb_grupo_completo as (
 				case when extract(month from dt_ingresso_curso)<=6 then 1 else 2 end as semestre_ingresso,
 				COALESCE(t2.qt_vagas_integral_pres,0) + COALESCE(t2.qt_vagas_matutino_pres,0) + COALESCE(t2.qt_vagas_noturno_pres,0) + COALESCE(t2.qt_vagas_vespertino_pres,0) as vagas,					
 				COALESCE(t2.qt_inscritos_integral_pres,0) + COALESCE(t2.qt_inscritos_matutino_pres,0) + COALESCE(t2.qt_inscritos_noturno_pres,0) + COALESCE(t2.qt_inscritos_vespertino_pres,0) as candidatos, 	
-				co_ocde_area_geral,
+				COALESCE(co_ocde_area_geral,0) as co_ocde_area_geral,
 				case when co_ocde_area_geral in (4,5) then 1 /*Exatas*/
 					 when co_ocde_area_geral in (6,7) then 2 /*Saude*/
 					 when co_ocde_area_geral in (1,2,3,8) then 3 /*Humanas*/
@@ -40,7 +40,7 @@ create table Unb_grupo_completo as (
 				2010 as ano
 		from dm_aluno_2010 t1
 		inner join dm_curso_2010 t2 on t1.co_curso=t2.co_curso
-		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1
+		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1 and tp_atributo_ingresso=0
 	),
 
 	num_ies_2010 as (
@@ -87,7 +87,7 @@ create table Unb_grupo_completo as (
 				case when extract(month from dt_ingresso_curso)<=6 then 1 else 2 end as semestre_ingresso,
 				COALESCE(t2.qt_vagas_integral_pres,0) + COALESCE(t2.qt_vagas_matutino_pres,0) + COALESCE(t2.qt_vagas_noturno_pres,0) + COALESCE(t2.qt_vagas_vespertino_pres,0) as vagas,					
 				COALESCE(t2.qt_inscritos_integral_pres,0) + COALESCE(t2.qt_inscritos_matutino_pres,0) + COALESCE(t2.qt_inscritos_noturno_pres,0) + COALESCE(t2.qt_inscritos_vespertino_pres,0) as candidatos, 	
-				co_ocde_area_geral,
+				COALESCE(co_ocde_area_geral,0) as co_ocde_area_geral,
 				case when co_ocde_area_geral in (4,5) then 1 /*Exatas*/
 					 when co_ocde_area_geral in (6,7) then 2 /*Saude*/
 					 when co_ocde_area_geral in (1,2,3,8) then 3 /*Humanas*/
@@ -116,7 +116,7 @@ create table Unb_grupo_completo as (
 				2011 as ano
 		from dm_aluno_2011 t1
 		inner join dm_curso_2011 t2 on t1.co_curso=t2.co_curso
-		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1
+		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1 and tp_atributo_ingresso=0
 	),
 
 	num_ies_2011 as (
@@ -163,7 +163,7 @@ create table Unb_grupo_completo as (
 				case when extract(month from dt_ingresso_curso)<=6 then 1 else 2 end as semestre_ingresso,
 				COALESCE(t2.qt_vagas_integral_pres,0) + COALESCE(t2.qt_vagas_matutino_pres,0) + COALESCE(t2.qt_vagas_noturno_pres,0) + COALESCE(t2.qt_vagas_vespertino_pres,0) as vagas,					
 				COALESCE(t2.qt_inscritos_integral_pres,0) + COALESCE(t2.qt_inscritos_matutino_pres,0) + COALESCE(t2.qt_inscritos_noturno_pres,0) + COALESCE(t2.qt_inscritos_vespertino_pres,0) as candidatos, 	
-				co_ocde_area_geral,
+				COALESCE(co_ocde_area_geral,0) as co_ocde_area_geral,
 				case when co_ocde_area_geral in (4,5) then 1 /*Exatas*/
 					 when co_ocde_area_geral in (6,7) then 2 /*Saude*/
 					 when co_ocde_area_geral in (1,2,3,8) then 3 /*Humanas*/
@@ -192,7 +192,7 @@ create table Unb_grupo_completo as (
 				2012 as ano
 		from dm_aluno_2012 t1
 		inner join dm_curso_2012 t2 on t1.co_curso=t2.co_curso
-		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1
+		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1 and tp_atributo_ingresso=0
 	),
 
 	num_ies_2012 as (
@@ -239,7 +239,7 @@ create table Unb_grupo_completo as (
 				case when extract(month from dt_ingresso_curso)<=6 then 1 else 2 end as semestre_ingresso,
 				COALESCE(t2.qt_vagas_principal_integral,0) + COALESCE(t2.qt_vagas_principal_matutino,0) + COALESCE(t2.qt_vagas_principal_noturno,0) + COALESCE(t2.qt_vagas_principal_vespertino,0) as vagas,
 				COALESCE(t2.qt_inscritos_principal_matu,0) + COALESCE(t2.qt_inscritos_principal_vesp,0) + COALESCE(t2.qt_inscritos_principal_noturno,0) + COALESCE(t2.qt_inscritos_principal_inte,0) as candidatos, 
-				t1.co_ocde_area_geral,
+				COALESCE(t1.co_ocde_area_geral,0) as co_ocde_area_geral,
 				case when t1.co_ocde_area_geral in (4,5) then 1 /*Exatas*/
 					 when t1.co_ocde_area_geral in (6,7) then 2 /*Saude*/
 					 when t1.co_ocde_area_geral in (1,2,3,8) then 3 /*Humanas*/
@@ -268,7 +268,7 @@ create table Unb_grupo_completo as (
 				2013 as ano
 		from dm_aluno_2013 t1
 		inner join dm_curso_2013 t2 on t1.co_curso=t2.co_curso
-		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1
+		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1 and tp_atributo_ingresso=0
 	),
 
 	num_ies_2013 as (
@@ -315,7 +315,7 @@ create table Unb_grupo_completo as (
 				case when extract(month from dt_ingresso_curso)<=6 then 1 else 2 end as semestre_ingresso,
 				COALESCE(t2.qt_vagas_novas_integral,0) + COALESCE(t2.qt_vagas_novas_matutino,0) + COALESCE(t2.qt_vagas_novas_vespertino,0) + COALESCE(t2.qt_vagas_novas_noturno,0) as vagas,
 				COALESCE(t2.qt_insc_vagas_novas_int,0) + COALESCE(t2.qt_insc_vagas_novas_mat,0) + COALESCE(t2.qt_insc_vagas_novas_vesp,0) + COALESCE(t2.qt_insc_vagas_novas_not,0) as candidatos, 
-				t1.co_ocde_area_geral,
+				COALESCE(t1.co_ocde_area_geral,0) as co_ocde_area_geral,
 				case when t1.co_ocde_area_geral in (4,5) then 1 /*Exatas*/
 					 when t1.co_ocde_area_geral in (6,7) then 2 /*Saude*/
 					 when t1.co_ocde_area_geral in (1,2,3,8) then 3 /*Humanas*/
@@ -344,7 +344,7 @@ create table Unb_grupo_completo as (
 				2014 as ano
 		from dm_aluno_2014 t1
 		inner join dm_curso_2014 t2 on t1.co_curso=t2.co_curso
-		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1
+		where t1.co_ies=2 and t1.co_modalidade_ensino=1 and t1.co_nivel_academico=1 and tp_atributo_ingresso=0
 	),
 
 	num_ies_2014 as (
@@ -505,7 +505,6 @@ create table Unb_grupo_completo as (
 		inner join num_ies_2014 t3 on t1.co_aluno=t3.co_aluno
 	),
 
-
 	ult_sit as (
 		select tab.*
 		from (
@@ -546,6 +545,9 @@ create table Unb_grupo_completo as (
 			tab2.ds_categoria_administrativa,
 			tab2.ds_organizacao_academica,
 			tab2.co_curso,
+			tab2.id_mascara,
+			tab2.co_aluno,
+			tab2.nu_cpf,
 			tab2.semestre_ingresso,
 			tab2.ano_ing,
 			tab2.vagas,
@@ -572,8 +574,10 @@ create table Unb_grupo_completo as (
 			tab2.in_bolsa_monitoria,
 			tab2.in_bolsa_pesquisa,
 			tab2.in_bolsa_extensao,
-			tab2.num_ies,
 			tab2.num_cursos,
+			tab2.num_ies,
+			tab2.ano as ano_CES,
+			tab2.ano_max2 as ano_ENEM,
 			tab2.ano_max,
 			tab2.evasao,
 			tab2.doc_exercicio,
