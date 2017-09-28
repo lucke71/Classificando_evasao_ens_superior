@@ -1,7 +1,16 @@
 Anotações sobre os modelos:
 
-UNB_IES_INGRESSANTES:
+UNB_IES_INGRESSANTES: 
+base_treinamento = 17.770 linhas
+base_teste = 5.922 linhas
 
+Downsampling: 2.196 linhas 
+   N    S 
+1098 1098
+
+Upsampling: 33.344 linhas
+   N     S 
+16672 16672
 
 
 C50_fit ===> Não formou árvore. Classificou todos como não evasão. spec=0 acc=0.949
@@ -129,7 +138,16 @@ solução: adicionar importance=T no train
 #############################################
 #############################################
 UNB_CURSO_INGRESSANTES:
+base_treinamento = 17.770 linhas
+base_teste = 5.922 linhas
 
+Downsampling: 2.196 linhas 
+   N    S 
+1098 1098
+
+Upsampling: 33.344 linhas
+   N     S 
+16672 16672
 
 
 C50_fit ===> Não formou árvore. Classificou todos como não evasão. spec=0 acc=0.9384
@@ -364,6 +382,16 @@ q049B                    13.09
 #############################################
 #############################################
 UNB_GRUPO_INGRESSANTES:
+base_treinamento = 15.876 linhas
+base_teste = 5.291 linhas
+
+Downsampling: 1.884 linhas 
+   N    S 
+942 942
+
+Upsampling: 29.868 linhas
+   N     S 
+14934 14934
 
 
 
@@ -639,6 +667,19 @@ doc_temp_parcial      12.60
 ############################################
 
 UNB_IES_COMPLETO:
+base_treinamento = 19.258 linhas
+base_teste = 6.418 linhas
+
+Downsampling:  6.236 linhas 
+   N    S 
+3118 3118
+
+Upsampling: 32280 linhas
+   N     S 
+16140 16140
+
+
+
 
 C50_fit ===>  spec=0.5544 acc=0.9113
 
@@ -956,3 +997,668 @@ q0285                        14.44
 q013C                        14.43
 nu_nota_comp2                14.15
 
+
+############################################
+############################################
+UNB_GRUPO_COMPLETO:
+base_treinamento = 18.409 linhas
+base_teste = 6.135 linhas
+
+Downsampling:  5.944 linhas 
+   N    S 
+2972 2972
+
+Upsampling: 30.874 linhas
+   N     S 
+15437 15437
+
+
+
+
+
+C50_fit ===>  spec=0.5768 acc=0.8994 (tvz overfit)
+
+                           Overall
+nota_cn                     100.00
+ano_ces                     100.00
+q031                        100.00
+nu_integralizacao_integral  100.00
+in_bolsa_monitoria          100.00
+num_ies                      99.96
+num_cursos                   99.84
+in_compl_pesquisa            92.99
+uf_esc                       92.68
+ano_enem                     90.19
+doc_horista                  87.23
+ano_ing                      84.58
+idade                        81.02
+nota_ch                      79.44
+nu_integralizacao_noturno    78.73
+q026                         77.42
+nu_nota_comp1                76.67
+in_bolsa_extensao            76.41
+id_dependencia_adm_esc       75.96
+q030                         75.78
+
+
+
+C50_fit_dwn ===> Formou árvore. spec=0.8172 acc=0.8308
+
+Aparentemetne foi usado boost* que utiliza mais de uma árvore para realizar a classificação
+
+                           Overall
+in_bolsa_monitoria          100.00
+ano_ing                     100.00
+num_cursos                  100.00
+ano_ces                     100.00
+q043                        100.00
+nu_integralizacao_integral  100.00
+num_ies                     100.00
+in_bolsa_extensao            99.85
+in_compl_pesquisa            99.58
+in_compl_extensao            99.41
+nota_ch                      99.33
+in_compl_monitoria           99.18
+candidatos                   99.13
+q026                         98.96
+co_ocde_area_geral           98.89
+q025                         98.77
+q040                         98.59
+q041                         98.38
+q034                         98.37
+idade                        97.81
+
+
+C50_fit_up ===> spec=0.5768  acc=0.8945
+Overfit -> classificação quase perfeita durante o treinamento...
+
+
+
+
+cart_fit ===>  spec= 0.5182  acc=0.9015  
+
+
+                   Overall
+ano_max            100.000
+ano_ces            100.000
+doc_graduacao       48.410
+doc_mestrado        47.451
+doc_brasileiro      45.154
+num_ies             22.204
+num_cursos          16.990
+in_compl_monitoria   9.822
+in_compl_extensao    9.071
+in_compl_estagio     8.659
+in_compl_pesquisa    5.735
+ano_ing              5.280
+ano_enem             5.260
+idade                4.339
+uf_prova             4.334
+candidatos           4.072
+ano_concluiu         3.457
+st_conclusao         3.267
+co_ocde_area_geral   2.837
+q003                 2.687
+
+
+
+cart_fit_dwn ===>  spec=0.8293   acc=0.8158
+
+ano_ces=2014 _ num_ies
+
+ano_ces<2014 final_leaf
+
+                   Overall
+ano_max            100.000
+ano_ces            100.000
+doc_exercicio       64.554
+doc_brasileiro      61.318
+doc_temp_parcial    58.142
+idade               27.476
+num_ies             24.233
+ano_enem            18.236
+in_compl_monitoria  18.170
+in_compl_estagio    18.022
+in_compl_extensao   18.022
+st_conclusao         9.287
+concluiu_ens_med     8.927
+ano_concluiu         8.927
+num_cursos           7.383
+ano_ing              6.169
+in_compl_pesquisa    5.152
+semestre_ingresso    4.465
+tp_escola            3.153
+q025                 2.892
+
+
+
+
+cart_fit_up ===>  spec=0.8242 acc=0.8186
+ano_ces=2014 _ num_ies
+
+ano_ces<2014 final_leaf
+
+                   Overall
+num_ies            100.000
+doc_exercicio       73.441
+doc_brasileiro      72.668
+doc_temp_parcial    71.341
+doc_mestrado        66.843
+ano_ing             35.997
+ano_enem            35.812
+idade               33.325
+in_compl_extensao   25.145
+in_compl_estagio    25.145
+in_compl_monitoria  25.145
+co_ocde_area_geral  14.414
+st_conclusao        12.719
+concluiu_ens_med    12.458
+ano_concluiu        12.458
+uf_nasc             12.233
+in_compl_pesquisa    9.047
+q026                 8.450
+doc_graduacao        8.418
+num_cursos           6.116
+
+
+
+
+naive_fit ===> spec=0.6838  acc= 0.7876 
+atributos mais importantes:
+
+                       Importance
+num_ies                    100.00
+idade                       85.72
+in_compl_extensao           82.93
+in_compl_estagio            82.93
+in_compl_pesquisa           82.65
+in_compl_monitoria          82.56
+concluiu_ens_med            80.62
+sit_func_esc                79.92
+id_localizacao_esc          79.88
+mun_res_dif_esc             79.56
+mun_esc_dif_prova           79.43
+uf_esc                      78.73
+id_dependencia_adm_esc      78.51
+tp_escola                   74.84
+ano_concluiu                73.63
+doc_especializacao          72.78
+q027                        71.11
+in_bolsa_monitoria          70.59
+q026                        69.94
+q029                        69.79
+
+
+
+naive_fit_dwn ===> spec=0.6798  acc=0.7477
+
+                       Importance
+num_ies                    100.00
+idade                       85.44
+in_compl_extensao           81.16
+in_compl_estagio            81.10
+in_compl_pesquisa           80.89
+in_compl_monitoria          80.81
+concluiu_ens_med            80.08
+sit_func_esc                79.55
+id_localizacao_esc          79.45
+mun_res_dif_esc             78.63
+uf_esc                      78.53
+id_dependencia_adm_esc      78.42
+mun_esc_dif_prova           78.30
+tp_escola                   76.63
+q027                        73.69
+doc_especializacao          72.81
+q029                        72.71
+ano_concluiu                72.61
+q026                        72.01
+in_bolsa_monitoria          70.00
+
+
+
+naive_fit_up ===> spec=0.7091  acc= 0.7578 
+
+                       Importance
+num_ies                    100.00
+idade                       84.50
+in_compl_estagio            82.08
+in_compl_extensao           82.05
+in_compl_pesquisa           81.84
+in_compl_monitoria          81.73
+concluiu_ens_med            79.68
+sit_func_esc                78.90
+id_localizacao_esc          78.84
+mun_res_dif_esc             78.47
+mun_esc_dif_prova           78.39
+uf_esc                      77.93
+id_dependencia_adm_esc      77.64
+ano_concluiu                73.58
+tp_escola                   73.46
+doc_especializacao          70.36
+in_bolsa_monitoria          70.33
+q027                        70.10
+q026                        69.09
+q029                        68.73
+
+
+
+nnet_fit ===> spec=0.0000 acc=0.8386
+erro no varImp
+solução: adicionar importance=T no train
+
+nnet_fit_dwn ===> spec= 0.7697 acc=0.7705
+erro no varImp
+solução: adicionar importance=T no train
+
+nnet_fit_up ===> spec=0.7364  acc=0.8112
+erro no varImp
+solução: adicionar importance=T no train
+
+
+
+reglog ===> spec=0.5283  acc=0.8954
+
+                     Overall
+num_ies               100.00
+num_cursos2            78.91
+ano_ing                39.23
+ano_ces2014            38.19
+q0265                  31.53
+tp_sexoM               24.90
+candidatos             23.82
+q0264                  22.35
+in_certificado1        16.78
+in_compl_pesquisa1     16.77
+in_compl_monitoria1    14.92
+tp_escolabranco        14.57
+co_ocde_area_geral2    14.31
+ano_enem2014           13.82
+vagas                  13.03
+nu_nota_comp2          12.97
+uf_prova35             12.68
+mun_nasc_dif_escTRUE   11.89
+st_conclusao2          11.82
+q0263                  11.74
+
+
+reglog_dwn ===> spec=0.7455  acc= 0.8068
+
+                     Overall
+num_ies               100.00
+num_cursos2            73.67
+ano_ing                45.16
+q0265                  36.38
+candidatos             30.78
+ano_ces2014            28.65
+tp_sexoM               27.79
+semestre_ingresso2     22.73
+mun_nasc_dif_escTRUE   21.74
+q011B                  20.98
+q0264                  19.40
+in_compl_pesquisa1     19.22
+ano_enem2014           17.93
+doc_brasileiro_nat     17.84
+q011C                  17.22
+q0048                  16.05
+co_ocde_area_geral2    16.01
+vagas                  15.94
+tp_escolabranco        15.70
+q0285                  14.60
+
+
+reglog_up ===> spec=0.7333   acc= 0.8253
+
+                    Overall
+num_ies              100.00
+num_cursos2           74.40
+ano_ing               47.29
+ano_ces2014           36.56
+q0265                 34.39
+in_compl_pesquisa1    20.81
+q0264                 20.50
+candidatos            19.78
+q039B                 19.77
+tp_escolabranco       17.92
+tp_sexoM              16.78
+co_ocde_area_geral7   16.61
+semestre_ingresso2    15.63
+in_compl_monitoria1   15.51
+q033C                 15.21
+q0282                 14.75
+co_ocde_area_geral2   14.51
+doc_brasileiro_nat    13.89
+nu_nota_redacao       13.89
+q002B                 13.79
+
+
+
+############################################
+############################################
+
+UNB_CURSO_COMPLETO:
+base_treinamento = 21.516 linhas
+base_teste = 7.171 linhas
+
+Downsampling:  8.946 linhas 
+   N    S 
+4.473 4.473
+
+Upsampling: 34.086 linhas
+   N     S 
+17.043 17.043
+
+
+
+C50_fit ===>  spec=0.6579 acc=0.9018 (tvz overfit)
+
+                           Overall
+doc_especializacao          100.00
+ano_ces                     100.00
+in_bolsa_monitoria          100.00
+nu_integralizacao_integral  100.00
+num_cursos                   99.49
+doc_temp_parcial             99.38
+num_ies                      99.05
+doc_doutorado                95.68
+ano_ing                      93.98
+doc_brasileiro               90.00
+nu_integralizacao_noturno    88.78
+in_compl_monitoria           87.24
+in_compl_pesquisa            86.89
+idade                        86.87
+doc_brasileiro_nat           86.51
+doc_integ_sem_de             86.13
+q044                         84.37
+q034                         80.43
+q026                         80.37
+q041                         79.08
+
+
+
+C50_fit_dwn ===> Formou árvore. spec=0.8182  acc=0.8469 
+
+Aparentemetne foi usado boost* que utiliza mais de uma árvore para realizar a classificação
+
+                           Overall
+nu_integralizacao_noturno   100.00
+ano_ces                     100.00
+in_bolsa_monitoria          100.00
+ano_ing                     100.00
+nu_integralizacao_integral  100.00
+num_cursos                  100.00
+in_compl_estagio             99.93
+in_compl_extensao            99.93
+num_ies                      99.16
+in_compl_monitoria           98.64
+q026                         98.37
+candidatos                   98.35
+q040                         98.33
+doc_temp_parcial             97.55
+co_ocde_area_geral           96.99
+q034                         96.83
+doc_estrangeiro              96.23
+doc_mestrado                 94.86
+q043                         94.67
+uf_prova                     94.39
+
+
+C50_fit_up ===> spec=0.6673  acc=0.9043
+Overfit -> classificação quase perfeita durante o treinamento...
+
+
+
+
+cart_fit ===>  spec= 0.5352  acc=0.8827  
+
+
+                   Overall
+ano_max            100.000
+ano_ces            100.000
+doc_brasileiro      43.971
+doc_temp_parcial    42.119
+doc_mestrado        41.820
+ano_ing             33.775
+vagas               32.228
+candidatos          28.148
+num_cursos          21.141
+doc_afastado_outro  19.997
+abi                 11.398
+doc_estrangeiro     10.399
+num_ies              9.112
+doc_integ_sem_de     6.373
+idade                6.058
+doc_integ_de         4.785
+st_conclusao         4.663
+ano_concluiu         4.584
+doc_horista          3.758
+co_ocde_area_geral   1.688
+
+
+
+cart_fit_dwn ===>  spec=0.8598   acc=0.8004
+
+ano_ces=2014 _ num_cursos
+
+ano_ces<2014 final_leaf
+
+                   Overall
+ano_ces            100.000
+ano_max            100.000
+doc_exercicio       53.705
+doc_mestrado        53.621
+doc_brasileiro      53.432
+idade               40.817
+num_ies             37.461
+num_cursos          35.081
+in_compl_extensao   24.091
+in_compl_monitoria  24.087
+in_compl_estagio    23.871
+ano_enem            23.675
+st_conclusao        20.854
+ano_concluiu        20.046
+ano_ing             17.954
+in_compl_pesquisa   12.064
+semestre_ingresso   11.106
+uf_nasc              9.181
+concluiu_ens_med     9.026
+q026                 7.284
+
+
+
+
+cart_fit_up ===>  spec=0.7793 acc=0.823
+ano_ces=2014 _ num_cursos
+
+ano_ces<2014 final_leaf
+
+                   Overall
+ano_max            100.000
+ano_ces            100.000
+doc_brasileiro      53.623
+doc_exercicio       52.420
+doc_mestrado        51.009
+num_ies             42.657
+num_cursos          37.169
+idade               33.866
+st_conclusao        26.127
+ano_concluiu        25.397
+ano_ing             13.352
+semestre_ingresso   12.355
+concluiu_ens_med    11.990
+uf_nasc              7.225
+ano_enem             6.863
+q003                 6.742
+q026                 5.086
+in_bolsa_monitoria   4.608
+in_compl_monitoria   4.608
+in_compl_estagio     3.888
+
+
+
+
+naive_fit ===> spec=0.6539  acc= 0.7395 
+atributos mais importantes:
+
+                       Importance
+num_ies                    100.00
+num_cursos                  94.27
+idade                       92.80
+concluiu_ens_med            88.54
+in_compl_estagio            88.33
+in_compl_extensao           88.26
+in_compl_pesquisa           88.24
+in_compl_monitoria          87.88
+sit_func_esc                87.27
+id_localizacao_esc          87.25
+id_dependencia_adm_esc      86.70
+mun_esc_dif_prova           86.67
+mun_res_dif_esc             86.57
+uf_esc                      86.33
+tp_escola                   85.77
+ano_concluiu                81.72
+doc_especializacao          78.35
+q027                        76.78
+in_bolsa_monitoria          76.20
+q026                        75.40
+
+
+
+naive_fit_dwn ===> spec=0.6922  acc=0.7187
+
+                       Importance
+num_ies                    100.00
+num_cursos                  95.98
+idade                       94.72
+concluiu_ens_med            89.78
+sit_func_esc                88.17
+id_localizacao_esc          88.11
+in_compl_estagio            88.01
+in_compl_pesquisa           87.85
+in_compl_extensao           87.85
+in_compl_monitoria          87.54
+mun_res_dif_esc             87.42
+mun_esc_dif_prova           87.39
+id_dependencia_adm_esc      87.13
+uf_esc                      86.85
+tp_escola                   84.57
+ano_concluiu                82.42
+q027                        78.16
+doc_especializacao          77.88
+in_bolsa_monitoria          76.62
+q029                        76.15
+
+
+
+naive_fit_up ===> spec=0.6821   acc= 0.7126 
+
+                       Importance
+num_ies                    100.00
+num_cursos                  93.93
+idade                       92.60
+in_compl_estagio            89.00
+in_compl_pesquisa           88.91
+concluiu_ens_med            88.88
+in_compl_extensao           88.84
+in_compl_monitoria          88.62
+sit_func_esc                87.27
+id_localizacao_esc          87.17
+id_dependencia_adm_esc      86.46
+mun_esc_dif_prova           86.44
+mun_res_dif_esc             86.39
+uf_esc                      86.37
+tp_escola                   84.87
+ano_concluiu                82.19
+q027                        77.80
+doc_especializacao          77.21
+q026                        76.99
+in_bolsa_monitoria          76.34
+
+
+
+nnet_fit ===> spec=0.5064 acc=0.8476
+erro no varImp
+solução: adicionar importance=T no train
+
+nnet_fit_dwn ===> spec= 0.4272 acc=0.7981
+erro no varImp
+solução: adicionar importance=T no train
+
+nnet_fit_up ===> spec=0.7069  acc=0.7953
+erro no varImp
+solução: adicionar importance=T no train
+
+
+
+reglog ===> spec=0.5258  acc=0.8686
+
+                           Overall
+num_cursos2                 100.00
+num_ies                      72.98
+ano_ing                      61.51
+semestre_ingresso2           27.99
+candidatos                   26.27
+abi1                         21.33
+q0265                        21.26
+ano_ces2014                  19.54
+q0264                        17.45
+tp_sexoM                     17.38
+nu_integralizacao_integral   16.51
+vagas                        13.70
+turno3                       13.59
+num_cursos3                  12.67
+doc_exercicio                11.64
+doc_graduacao                11.48
+doc_exer_outro_org           11.48
+doc_doutorado                11.25
+in_compl_monitoria1          11.20
+ano_ces2012                  11.20
+
+
+reglog_dwn ===> spec= 0.7720  acc=0.8196 
+
+                           Overall
+num_cursos2                 100.00
+num_ies                      76.77
+ano_ing                      55.41
+semestre_ingresso2           28.99
+q0265                        25.06
+candidatos                   24.84
+tp_sexoM                     22.79
+abi1                         19.59
+q0264                        16.85
+nu_integralizacao_integral   15.39
+num_cursos3                  14.73
+vagas                        14.09
+ano_ces2014                  13.79
+tp_escolabranco              13.78
+q013C                        12.60
+q0263                        12.19
+doc_exercicio                11.44
+uf_esc23                     11.31
+doc_exer_outro_org           11.16
+q039B                        11.12
+
+
+reglog_up ===> spec=0.7653   acc=  0.8183
+
+                           Overall
+num_cursos2                 100.00
+num_ies                      79.04
+ano_ing                      62.53
+semestre_ingresso2           27.27
+candidatos                   22.86
+q0265                        22.53
+abi1                         19.43
+q0264                        15.71
+tp_sexoM                     15.67
+ano_ces2014                  14.86
+doc_exer_outro_org           13.70
+doc_exercicio                13.17
+nu_integralizacao_integral   12.98
+doc_doutorado                12.59
+doc_graduacao                12.59
+doc_mestrado                 12.42
+vagas                        12.40
+doc_afastado_outro           12.22
+in_compl_monitoria1          11.75
+q033C                        11.55
