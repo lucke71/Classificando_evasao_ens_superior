@@ -152,15 +152,15 @@ classify_dropout <-
     # Classificando com CART
     if(classifier=="all" | classifier=="CART"){
       if(balance=="up"){
-        cart_fit_up <<- train(x = dplyr::select(up_data,-evasao),y=up_data$evasao,method="rpart",trControl=fitcontrol,tuneLength = 10,maxdepth=30,metric = 'Spec')
+        cart_fit_up <<- train(x = dplyr::select(up_data,-evasao),y=up_data$evasao,method="rpart",trControl=fitcontrol,tuneLength = 10,metric = 'Spec')
         cart_pred_up <<- predict(cart_fit_up,base_teste)
         mc_cart_up <<- confusionMatrix(cart_pred_up,base_teste$evasao)
       }else if(balance=="down"){
-        cart_fit_dwn <<- train(x = dplyr::select(dwn_data,-evasao),y=dwn_data$evasao,method="rpart",trControl=fitcontrol,tuneLength = 10,maxdepth=30,metric = 'Spec')
+        cart_fit_dwn <<- train(x = dplyr::select(dwn_data,-evasao),y=dwn_data$evasao,method="rpart",trControl=fitcontrol,tuneLength = 10,metric = 'Spec')
         cart_pred_dwn <<- predict(cart_fit_dwn,base_teste)
         mc_cart_dwn <<- confusionMatrix(cart_pred_dwn,base_teste$evasao)
       }else{
-        cart_fit <<- train(x = dplyr::select(base_treina,-evasao),y=base_treina$evasao,method="rpart",trControl=fitcontrol,tuneLength = 10,maxdepth=30,metric = 'Spec')
+        cart_fit <<- train(x = dplyr::select(base_treina,-evasao),y=base_treina$evasao,method="rpart",trControl=fitcontrol,tuneLength = 10,metric = 'Spec')
         cart_pred <<- predict(cart_fit,base_teste)
         mc_cart <<- confusionMatrix(cart_pred,base_teste$evasao)
       }
@@ -169,7 +169,7 @@ classify_dropout <-
     
     # Classificando com C5.0
     if(classifier=="all" | classifier=="C50"){
-      grid <- expand.grid( .winnow = c(TRUE,FALSE), .trials=c(1,10,20,30,40,90), .model="tree" )
+      grid <- expand.grid( .winnow = c(TRUE,FALSE), .trials=c(1,10,20,30,40), .model="tree" )
       if(balance=="up"){
         c50_fit_up <<- train(x=dplyr::select(up_data,-evasao),y=up_data$evasao,method="C5.0",tuneGrid = grid,trControl=fitcontrol,metric = 'Spec') 
         c50_pred_up <<- predict(c50_fit_up,base_teste)
