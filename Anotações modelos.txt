@@ -4,13 +4,13 @@ UNB_IES_INGRESSANTES:
 base_treinamento = 17.770 linhas
 base_teste = 5.922 linhas
 
-Downsampling: 2.196 linhas 
+Downsampling: 1818 linhas 
    N    S 
-1098 1098
+909 909
 
-Upsampling: 33.344 linhas
+Upsampling: 33.722 linhas
    N     S 
-16672 16672
+16861 16861
 
 
 C50_fit ===> Não formou árvore. Classificou todos como não evasão. spec=0 acc=0.949
