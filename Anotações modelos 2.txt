@@ -1,0 +1,24 @@
+############################
+############################
+UnB cursos ingressantes
+
+Naive Bayes:
+
+unbalanced: 
+
+usekernel  ROC        Sens       Spec     
+  FALSE      0.6679399  0.7889875  0.4408261
+   TRUE      0.6705962  0.9532750  0.1676012
+
+downsampling:
+
+  usekernel  ROC        Sens       Spec     
+  FALSE      0.6607770  0.6593431  0.5637392
+   TRUE      0.6634665  0.6420372  0.5928633
+
+
+upsampling:
+
+  usekernel  ROC        Sens       Spec     
+  FALSE      0.6949329  0.6779631  0.6152231
+   TRUE      0.7127138  0.7161108  0.5854127
