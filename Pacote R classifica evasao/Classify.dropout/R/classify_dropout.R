@@ -221,15 +221,15 @@ classify_dropout <-
     # Classificando com redes neurais
     if(classifier=="all" | classifier=="Nnet"){
       if(balance=="up"){
-        nnet_fit_up <<- train(x=dplyr::select(up_data,-evasao),y=up_data$evasao,method="nnet",trControl=fitcontrol,metric = 'Spec', maxit=1000,MaxNWts=3000)
+        nnet_fit_up <<- train(evasao ~ .,data=up_data,method="nnet",trControl=fitcontrol,metric = 'Spec', maxit=1000,MaxNWts=3000)
         nnet_pred_up <<- predict(nnet_fit_up,base_teste)
         mc_nnet_up <<- confusionMatrix(nnet_pred_up,base_teste$evasao)
       }else if(balance=="down"){
-        nnet_fit_dwn <<- train(x=dplyr::select(dwn_data,-evasao),y=dwn_data$evasao,method="nnet",trControl=fitcontrol,metric = 'Spec', maxit=1000,MaxNWts=3000) 
+        nnet_fit_dwn <<- train(evasao ~ .,data=dwn_data,method="nnet",trControl=fitcontrol,metric = 'Spec', maxit=1000,MaxNWts=3000) 
         nnet_pred_dwn <<- predict(nnet_fit_dwn,base_teste)
         mc_nnet_dwn <<- confusionMatrix(nnet_pred_dwn,base_teste$evasao)
       }else{
-        nnet_fit <<- train(x=dplyr::select(base_treina,-evasao),y=base_treina$evasao,method="nnet",trControl=fitcontrol,metric = 'Spec', maxit=1000,MaxNWts=3000) 
+        nnet_fit <<- train(evasao ~ ., data=base_treina,method="nnet",trControl=fitcontrol,metric = 'Spec', maxit=1000,MaxNWts=3000) 
         nnet_pred <<- predict(nnet_fit,base_teste)
         mc_nnet <<- confusionMatrix(nnet_pred,base_teste$evasao)
       }
