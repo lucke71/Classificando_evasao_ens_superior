@@ -41,7 +41,6 @@ Lucas Assis
 
 \seealso{
 %% ~~objects to See Also as \code{\link{help}}, ~~~
-\code{\link[caret]{train}}
 \code{\link[Classify.dropout]{create_dropout_database}}
 \code{\link[Classify.dropout]{classify_dropout}}
 }
