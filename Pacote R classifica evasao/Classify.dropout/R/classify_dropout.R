@@ -7,8 +7,7 @@ classify_dropout <-
     
       # indicar quais atributos nao sao factors
       attr_nao_factor = c("vagas","candidatos","num_ies","idade","ano_CES","ano_ENEM","ano_ing","nu_integralizacao_integral","nu_integralizacao_matutino","nu_integralizacao_vespertino","nu_integralizacao_noturno","ano_concluiu","doc_exercicio","doc_qualifcacao","doc_exer_outro_org","doc_afastado_outro","doc_afas_saude","doc_sem_grad","doc_graduacao","doc_especializacao","doc_mestrado","doc_doutorado","doc_integ_de","doc_integ_sem_de","doc_temp_parcial","doc_horista","doc_brasileiro","doc_brasileiro_nat","doc_estrangeiro","nota_cn","nota_ch","nota_lc","nota_mt","nu_nota_comp1","nu_nota_comp2","nu_nota_comp3","nu_nota_comp4","nu_nota_comp5","nu_nota_redacao","tmp_perman")
-      #attr_nao_factor = c("vagas","candidatos","num_ies","idade","ano_CES","ano_ENEM","ano_ing","ano_concluiu","doc_exercicio","doc_qualifcacao","doc_exer_outro_org","doc_afastado_outro","doc_afas_saude","doc_sem_grad","doc_graduacao","doc_especializacao","doc_mestrado","doc_doutorado","doc_integ_de","doc_integ_sem_de","doc_temp_parcial","doc_horista","doc_brasileiro","doc_brasileiro_nat","doc_estrangeiro","nota_cn","nota_ch","nota_lc","nota_mt","nu_nota_comp1","nu_nota_comp2","nu_nota_comp3","nu_nota_comp4","nu_nota_comp5","nu_nota_redacao","tmp_perman")
-      
+
       nao_factor_pos = sapply(attr_nao_factor,function(x)grep(paste0("^",x,"$"),names(database)))
       
       nao_factor_pos = unlist(nao_factor_pos)
@@ -152,17 +151,17 @@ classify_dropout <-
         naive_fit_up = train(x = dplyr::select(up_data,-evasao),y=up_data$evasao,method="nb",trControl=fitcontrol,metric = 'Spec')
         naive_pred_up = predict(naive_fit_up,base_teste)
         mc_naive_up = confusionMatrix(naive_pred_up,base_teste$evasao)
-        list(naive_fit_up,naive_pred_up,mc_naive_up)
+        return(list(naive_fit_up,naive_pred_up,mc_naive_up))
       }else if(balance=="down"){
         naive_fit_dwn = train(x = dplyr::select(dwn_data,-evasao),y=dwn_data$evasao,method="nb",trControl=fitcontrol,metric = 'Spec')
         naive_pred_dwn = predict(naive_fit_dwn,base_teste)
         mc_naive_dwn = confusionMatrix(naive_pred_dwn,base_teste$evasao)
-        list(naive_fit_dwn,naive_pred_dwn,mc_naive_dwn)
+        return(list(naive_fit_dwn,naive_pred_dwn,mc_naive_dwn))
       }else{
         naive_fit = train(x = dplyr::select(base_treina,-evasao),y=base_treina$evasao,method="nb",trControl=fitcontrol,metric = 'Spec')
         naive_pred = predict(naive_fit,base_teste)
         mc_naive = confusionMatrix(naive_pred,base_teste$evasao)
-        list(naive_fit,naive_pred,mc_naive)
+        return(list(naive_fit,naive_pred,mc_naive))
       }
     }
     
@@ -173,17 +172,17 @@ classify_dropout <-
         cart_fit_up = train(x = dplyr::select(up_data,-evasao),y=up_data$evasao,method="rpart",trControl=fitcontrol,tuneLength = 10,metric = 'Spec')
         cart_pred_up = predict(cart_fit_up,base_teste)
         mc_cart_up = confusionMatrix(cart_pred_up,base_teste$evasao)
-        list(cart_fit_up,cart_pred_up,mc_cart_up)
+        return(list(cart_fit_up,cart_pred_up,mc_cart_up))
       }else if(balance=="down"){
-        cart_fit_dwn = train(x = dplyr::select(dwn_data,-evasao),y=dwn_data$evasao,method="rpart",trControl=fitcontrol,tuneLength = 10,metric = 'Spec')
-        cart_pred_dwn = predict(cart_fit_dwn,base_teste)
-        mc_cart_dwn = confusionMatrix(cart_pred_dwn,base_teste$evasao)
-        list(cart_fit_dwn,cart_pred_dwn,mc_cart_dwn)
+        cart_fit_dwn <<- train(x = dplyr::select(dwn_data,-evasao),y=dwn_data$evasao,method="rpart",trControl=fitcontrol,tuneLength = 10,metric = 'Spec')
+        cart_pred_dwn <<- predict(cart_fit_dwn,base_teste)
+        mc_cart_dwn <<- confusionMatrix(cart_pred_dwn,base_teste$evasao)
+        return(list(cart_fit_dwn,cart_pred_dwn,mc_cart_dwn))
       }else{
         cart_fit = train(x = dplyr::select(base_treina,-evasao),y=base_treina$evasao,method="rpart",trControl=fitcontrol,tuneLength = 10,metric = 'Spec')
         cart_pred = predict(cart_fit,base_teste)
         mc_cart = confusionMatrix(cart_pred,base_teste$evasao)
-        list(cart_fit,cart_pred,mc_cart)
+        return(list(cart_fit,cart_pred,mc_cart))
       }
     }
     
@@ -195,17 +194,17 @@ classify_dropout <-
         c50_fit_up = train(x=dplyr::select(up_data,-evasao),y=up_data$evasao,method="C5.0",tuneGrid = grid,trControl=fitcontrol,metric = 'Spec') 
         c50_pred_up = predict(c50_fit_up,base_teste)
         mc_c50_up = confusionMatrix(c50_pred_up,base_teste$evasao)
-        list(c50_fit_up,c50_pred_up,mc_c50_up)
+        return(list(c50_fit_up,c50_pred_up,mc_c50_up))
       }else if(balance=="down"){
         c50_fit_dwn = train(x=dplyr::select(dwn_data,-evasao),y=dwn_data$evasao,method="C5.0",tuneGrid = grid,trControl=fitcontrol,metric = 'Spec') 
         c50_pred_dwn = predict(c50_fit_dwn,base_teste)
         mc_c50_dwn = confusionMatrix(c50_pred_dwn,base_teste$evasao)
-        list(c50_fit_dwn,c50_pred_dwn,mc_c50_dwn)
+       	return(list(c50_fit_dwn,c50_pred_dwn,mc_c50_dwn))
       }else{
         c50_fit = train(x=dplyr::select(base_treina,-evasao),y=base_treina$evasao,method="C5.0",tuneGrid = grid,trControl=fitcontrol,metric = 'Spec') 
         c50_pred = predict(c50_fit,base_teste)
         mc_c50 = confusionMatrix(c50_pred,base_teste$evasao)
-        list(c50_fit,c50_pred,mc_c50)
+        return(list(c50_fit,c50_pred,mc_c50))
       }
     }
     
@@ -216,17 +215,17 @@ classify_dropout <-
         reglog_fit_up = train(evasao ~ .,data=up_data ,method="glm",family=binomial(link="logit"),trControl=fitcontrol,metric = 'Spec',maxit=100) 
         reg_pred_up = predict(reglog_fit_up,base_teste)
         mc_reg_up = confusionMatrix(reg_pred_up,base_teste$evasao)
-        list(reglog_fit_up,reg_pred_up,mc_reg_up)
+        return(list(reglog_fit_up,reg_pred_up,mc_reg_up))
       }else if(balance=="down"){
         reglog_fit_dwn = train(evasao ~ .,data=dwn_data ,method="glm",family=binomial(link="logit"),trControl=fitcontrol,metric = 'Spec',maxit=100) 
         reg_pred_dwn = predict(reglog_fit_dwn,base_teste)
         mc_reg_dwn = confusionMatrix(reg_pred_dwn,base_teste$evasao)
-        list(reglog_fit_dwn,reg_pred_dwn,mc_reg_dwn)
+        return(list(reglog_fit_dwn,reg_pred_dwn,mc_reg_dwn))
       }else{
         reglog_fit = train(evasao ~ .,data=base_treina ,method="glm",family=binomial(link="logit"),trControl=fitcontrol,metric = 'Spec',maxit=100) 
         reg_pred = predict(reglog_fit,base_teste)
         mc_reg = confusionMatrix(reg_pred,base_teste$evasao)
-        list(reglog_fit,reg_pred,mc_reg)
+        return(list(reglog_fit,reg_pred,mc_reg))
       }
     }
     
@@ -236,17 +235,17 @@ classify_dropout <-
         nnet_fit_up = train(evasao ~ .,data=up_data,method="nnet",trControl=fitcontrol,metric = 'Spec', maxit=1000,MaxNWts=3000)
         nnet_pred_up = predict(nnet_fit_up,base_teste)
         mc_nnet_up = confusionMatrix(nnet_pred_up,base_teste$evasao)
-        list(nnet_fit_up,nnet_pred_up,mc_nnet_up)
+        return(list(nnet_fit_up,nnet_pred_up,mc_nnet_up))
       }else if(balance=="down"){
         nnet_fit_dwn = train(evasao ~ .,data=dwn_data,method="nnet",trControl=fitcontrol,metric = 'Spec', maxit=1000,MaxNWts=3000) 
         nnet_pred_dwn = predict(nnet_fit_dwn,base_teste)
         mc_nnet_dwn = confusionMatrix(nnet_pred_dwn,base_teste$evasao)
-        list(nnet_fit_dwn,nnet_pred_dwn,mc_nnet_dwn)
+        return(list(nnet_fit_dwn,nnet_pred_dwn,mc_nnet_dwn))
       }else{
         nnet_fit = train(evasao ~ ., data=base_treina,method="nnet",trControl=fitcontrol,metric = 'Spec', maxit=1000,MaxNWts=3000) 
         nnet_pred = predict(nnet_fit,base_teste)
         mc_nnet = confusionMatrix(nnet_pred,base_teste$evasao)
-        list(nnet_fit,nnet_pred,mc_nnet)
+        return(list(nnet_fit,nnet_pred,mc_nnet))
       }
     }
   }
