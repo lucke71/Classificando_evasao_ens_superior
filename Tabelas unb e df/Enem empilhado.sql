@@ -1,4 +1,359 @@
 ﻿CREATE TABLE enem_empilhado as (
+--Select do ENEM 2016
+	SELECT
+	t1.nu_ano,
+	t2.nu_cpf,
+	nu_inscricao as id_inscricao,
+	NULL::bigint as id_mascara,
+	in_estuda_classe_hospitalar,
+	co_municipio_residencia as cod_municipio_residencia,
+	co_municipio_esc as cod_municipio_esc,
+	tp_dependencia_adm_esc as id_dependencia_adm_esc,
+	tp_localizacao_esc as id_localizacao_esc,
+	tp_sit_func_esc as sit_func_esc,
+	nu_idade as idade,
+	tp_sexo,
+	tp_nacionalidade as nacionalidade,
+	co_municipio_nascimento as cod_municipio_nascimento,
+	tp_st_conclusao as st_conclusao,
+	tp_ano_concluiu as ano_concluiu,
+	tp_escola,
+	tp_ensino as in_tp_ensino,
+	tp_estado_civil,
+	tp_cor_raca,
+	in_baixa_visao,
+	in_cegueira,
+	in_surdez,
+	in_deficiencia_auditiva,
+	in_surdo_cegueira,
+	in_deficiencia_fisica,
+	in_deficiencia_mental,
+	in_deficit_atencao,
+	in_dislexia,
+	in_gestante,
+	in_lactante,
+	in_idoso,
+	in_autismo,
+	in_sabatista,
+	in_braille,
+	in_ampliada_24,
+	in_ampliada_18,
+	in_ledor,
+	in_acesso,
+	in_transcricao,
+	in_libras,
+	in_leitura_labial,
+	in_mesa_cadeira_rodas,
+	in_mesa_cadeira_separada,
+	in_guia_interprete,
+	in_certificado,
+	co_municipio_prova as cod_municipio_prova,
+	nu_nota_cn as nota_cn,
+	nu_nota_ch as nota_ch,
+	nu_nota_lc as nota_lc,
+	nu_nota_mt as nota_mt,
+	nu_nota_comp1,
+	nu_nota_comp2,
+	nu_nota_comp3,
+	nu_nota_comp4,
+	nu_nota_comp5,
+	nu_nota_redacao,
+	q001,
+	q002,
+	q006 as q003,
+	q005 as q004,
+	NULL as q005,
+	NULL as q006,
+	case when q019='A' then 'D' 
+		 when q019='B' then 'A' 
+		 when q019='C' then 'B' 
+		 else 'C' end as q007,
+	case when q020='A' then 'D' 
+		 when q020='B' then 'A' 
+		 when q020='C' then 'B' 
+		 else 'C' end as q008,
+	NULL as q009,
+	q024 as q010,
+	NULL as q011,
+	case when q014='A' then 'D' 
+		 when q014='B' then 'A' 
+		 when q014='C' then 'B' 
+		 else 'C' end as q012,
+	case when q012='A' then 'D' 
+		 when q012='B' then 'A' 
+		 when q012='C' then 'B' 
+		 else 'C' end as q013,
+	case when q013='A' then 'D' 
+		 when q013='B' then 'A' 
+		 when q013='C' then 'B' 
+		 else 'C' end as q014,
+	case when q023='A' then 'A' 
+		 when q023='B' then 'D' end as q015,
+	case when q022='A' then 'D' 
+		 when q022='B' then 'A' 
+		 when q022='C' then 'B' 
+		 else 'C' end as q016,
+	case when q025='A' then 'A' 
+		 when q025='B' then 'D' end as q017,
+	case when q021='A' then 'A' 
+		 when q021='B' then 'D' end as q018,
+	case when q018='A' then 'A' 
+		 when q018='B' then 'D' end as q019,
+	NULL as q020,
+	case when q008='A' then 'A' 
+		 when q008='B' then 'D' end as q021,
+	case when q026='A' then 'C'
+		 when q026='B' then 'B'
+		 when q026='C' then 'A' end as q022,
+	q034 as q023,
+	q040 as q024,
+	q041 as q025,
+	q035 as q026,
+	q036 as q027,
+	q037 as q028,
+	q038 as q029,
+	NULL as q030,
+	NULL as q031,
+	q042 as q032,
+	NULL as q033,
+	NULL as q034,
+	q047 as q035,
+	NULL as q036,
+	NULL as q037,
+	NULL as q038,
+	NULL as q039,
+	case when q027='A' then 13
+		 when q027='B' then 15
+		 when q027='C' then 16
+		 when q027='D' then 17
+		 when q027='E' then 18
+		 when q027='F' then 19
+		 when q027='G' then 20
+		 when q027='H' then 21
+		 when q027='I' then 22
+		 when q027='J' then 23
+		 when q027='K' then 24
+		 when q027='L' then 25 end as q040,
+	q028 as q041,
+	q029 as q042,
+	q030 as q043,
+	q031 as q044,
+	q032 as q045,
+	q033 as q046,
+	NULL as q047,
+	NULL as q048,
+	NULL as q049,
+	NULL as q050,
+	NULL as q051,
+	NULL as q052,
+	NULL as q053,
+	NULL as q054,
+	NULL as q055,
+	NULL as q056,
+	NULL as q057,
+	NULL as q058,
+	NULL as q059,
+	NULL as q060,
+	NULL as q061,
+	NULL as q062,
+	NULL as q063,
+	NULL as q064,
+	NULL as q065,
+	NULL as q066,
+	NULL as q067,
+	NULL as q068,
+	NULL as q069,
+	NULL as q070,
+	NULL as q071,
+	NULL as q072,
+	NULL as q073,
+	NULL as q074,
+	NULL as q075,
+	NULL as q076	
+	FROM enem_2016 t1
+	INNER JOIN enem_mascara_2015_2016 t2 on t1.nu_inscricao=t2.id_mascara and t1.nu_ano=t2.nu_ano
+	WHERE nu_nota_cn is not null and nu_nota_ch is not null and nu_nota_lc is not null and nu_nota_mt is not null and nu_nota_comp1 is not null and nu_nota_comp2 is not null and nu_nota_comp3 is not null and nu_nota_comp4 is not null and nu_nota_comp5 is not null and nu_nota_redacao is not null
+
+	UNION ALL
+
+
+--Select do ENEM 2015
+	SELECT
+	t1.nu_ano,
+	t2.nu_cpf,
+	nu_inscricao as id_inscricao,
+	NULL::bigint as id_mascara,
+	in_estuda_classe_hospitalar,
+	co_municipio_residencia as cod_municipio_residencia,
+	co_municipio_esc as cod_municipio_esc,
+	tp_dependencia_adm_esc as id_dependencia_adm_esc,
+	tp_localizacao_esc as id_localizacao_esc,
+	tp_sit_func_esc as sit_func_esc,
+	nu_idade as idade,
+	tp_sexo,
+	tp_nacionalidade as nacionalidade,
+	co_municipio_nascimento as cod_municipio_nascimento,
+	tp_st_conclusao as st_conclusao,
+	tp_ano_concluiu as ano_concluiu,
+	tp_escola,
+	tp_ensino as in_tp_ensino,
+	tp_estado_civil,
+	tp_cor_raca,
+	in_baixa_visao,
+	in_cegueira,
+	in_surdez,
+	in_deficiencia_auditiva,
+	in_surdo_cegueira,
+	in_deficiencia_fisica,
+	in_deficiencia_mental,
+	in_deficit_atencao,
+	in_dislexia,
+	in_gestante,
+	in_lactante,
+	in_idoso,
+	in_autismo,
+	in_sabatista,
+	in_braille,
+	in_ampliada_24,
+	in_ampliada_18,
+	in_ledor,
+	in_acesso,
+	in_transcricao,
+	in_libras,
+	in_leitura_labial,
+	in_mesa_cadeira_rodas,
+	in_mesa_cadeira_separada,
+	in_guia_interprete,
+	in_certificado,
+	co_municipio_prova as cod_municipio_prova,
+	nu_nota_cn as nota_cn,
+	nu_nota_ch as nota_ch,
+	nu_nota_lc as nota_lc,
+	nu_nota_mt as nota_mt,
+	nu_nota_comp1,
+	nu_nota_comp2,
+	nu_nota_comp3,
+	nu_nota_comp4,
+	nu_nota_comp5,
+	nu_nota_redacao,
+	q001,
+	q002,
+	q006 as q003,
+	q005 as q004,
+	NULL as q005,
+	NULL as q006,
+	case when q019='A' then 'D' 
+		 when q019='B' then 'A' 
+		 when q019='C' then 'B' 
+		 else 'C' end as q007,
+	case when q020='A' then 'D' 
+		 when q020='B' then 'A' 
+		 when q020='C' then 'B' 
+		 else 'C' end as q008,
+	NULL as q009,
+	q024 as q010,
+	NULL as q011,
+	case when q014='A' then 'D' 
+		 when q014='B' then 'A' 
+		 when q014='C' then 'B' 
+		 else 'C' end as q012,
+	case when q012='A' then 'D' 
+		 when q012='B' then 'A' 
+		 when q012='C' then 'B' 
+		 else 'C' end as q013,
+	case when q013='A' then 'D' 
+		 when q013='B' then 'A' 
+		 when q013='C' then 'B' 
+		 else 'C' end as q014,
+	case when q023='A' then 'A' 
+		 when q023='B' then 'D' end as q015,
+	case when q022='A' then 'D' 
+		 when q022='B' then 'A' 
+		 when q022='C' then 'B' 
+		 else 'C' end as q016,
+	case when q025='A' then 'A' 
+		 when q025='B' then 'D' end as q017,
+	case when q021='A' then 'A' 
+		 when q021='B' then 'D' end as q018,
+	case when q018='A' then 'A' 
+		 when q018='B' then 'D' end as q019,
+	NULL as q020,
+	case when q008='A' then 'A' 
+		 when q008='B' then 'D' end as q021,
+	case when q026='A' then 'C'
+		 when q026='B' then 'B'
+		 when q026='C' then 'A' end as q022,
+	q034 as q023,
+	q040 as q024,
+	q041 as q025,
+	q035 as q026,
+	q036 as q027,
+	q037 as q028,
+	q038 as q029,
+	NULL as q030,
+	NULL as q031,
+	q042 as q032,
+	NULL as q033,
+	NULL as q034,
+	q047 as q035,
+	NULL as q036,
+	NULL as q037,
+	NULL as q038,
+	NULL as q039,
+	case when q027='A' then 13
+		 when q027='B' then 15
+		 when q027='C' then 16
+		 when q027='D' then 17
+		 when q027='E' then 18
+		 when q027='F' then 19
+		 when q027='G' then 20
+		 when q027='H' then 21
+		 when q027='I' then 22
+		 when q027='J' then 23
+		 when q027='K' then 24
+		 when q027='L' then 25 end as q040,
+	q028 as q041,
+	q029 as q042,
+	q030 as q043,
+	q031 as q044,
+	q032 as q045,
+	q033 as q046,
+	NULL as q047,
+	NULL as q048,
+	NULL as q049,
+	NULL as q050,
+	NULL as q051,
+	NULL as q052,
+	NULL as q053,
+	NULL as q054,
+	NULL as q055,
+	NULL as q056,
+	NULL as q057,
+	NULL as q058,
+	NULL as q059,
+	NULL as q060,
+	NULL as q061,
+	NULL as q062,
+	NULL as q063,
+	NULL as q064,
+	NULL as q065,
+	NULL as q066,
+	NULL as q067,
+	NULL as q068,
+	NULL as q069,
+	NULL as q070,
+	NULL as q071,
+	NULL as q072,
+	NULL as q073,
+	NULL as q074,
+	NULL as q075,
+	NULL as q076
+	FROM enem_2015 t1
+	INNER JOIN enem_mascara_2015_2016 t2 on t1.nu_inscricao=t2.id_mascara and t1.nu_ano=t2.nu_ano
+	WHERE nu_nota_cn is not null and nu_nota_ch is not null and nu_nota_lc is not null and nu_nota_mt is not null and nu_nota_comp1 is not null and nu_nota_comp2 is not null and nu_nota_comp3 is not null and nu_nota_comp4 is not null and nu_nota_comp5 is not null and nu_nota_redacao is not null
+
+	UNION ALL
+
 --Select do ENEM 2014		
 	SELECT
 	nu_ano,
